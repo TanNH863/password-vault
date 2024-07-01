@@ -31,7 +31,7 @@ export default function FingerprintSetup({ navigation }) {
 
     if (result.success) {
       Alert.alert('Authentication Successful', 'You have successfully set up fingerprint authentication.');
-      navigation.navigate('Welcome');
+      navigation.navigate('MainScreen');
     } else {
       Alert.alert('Authentication Failed', 'Please try again.');
     }
