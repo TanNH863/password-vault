@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { PasswordContext } from '../../components/PasswordContext';
 
 export default function MainScreen({ navigation }) {
   const { passwords, loadPasswordInfo } = useContext(PasswordContext);
+
+  useEffect(() => {
+    loadPasswordInfo();
+  }, []);
 
   const renderPasswordItem = ({ item }) => (
     <View style={styles.passwordItem}>
