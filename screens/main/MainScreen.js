@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { PasswordContext } from '../../components/PasswordContext';
+import PasswordList from '../../components/PasswordList';
 
 export default function MainScreen({ navigation }) {
   const { passwords, loadPasswordInfo } = useContext(PasswordContext);
@@ -10,29 +11,14 @@ export default function MainScreen({ navigation }) {
     loadPasswordInfo();
   }, []);
 
-  const renderPasswordItem = ({ item }) => (
-    <View style={styles.passwordItem}>
-      <View style={styles.passwordInfo}>
-        <Text style={styles.passwordText}>App/Site: {item.appOrSiteName}</Text>
-        <Text style={styles.passwordText}>Username: {item.username}</Text>
-        <Text style={styles.passwordText}>Password: {item.password}</Text>
-      </View>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       {passwords.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No passwords added yet</Text>
-        </View>
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No passwords added yet</Text>
+      </View>
       ) : (
-        <FlatList
-          data={passwords}
-          keyExtractor={item => item.id}
-          renderItem={renderPasswordItem}
-          contentContainerStyle={styles.listContainer}
-        />
+        <PasswordList passwords={passwords} />
       )}
       <TouchableOpacity
         style={styles.addButton}

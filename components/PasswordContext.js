@@ -11,10 +11,9 @@ export const PasswordProvider = ({ children }) => {
     loadPasswordInfo();
   }, []);
 
-  const loadPasswordInfo = () => {
-    getPasswordInfo(data => {
-      setPasswords(data);
-    });
+  const loadPasswordInfo = async () => {
+    const passwords = await getPasswordInfo();
+    setPasswords(passwords);
   };
 
   return (
