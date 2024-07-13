@@ -17,7 +17,7 @@ export default function PINCodeSetup({ navigation }) {
   const handleContinue = () => {
     if (pin.length === 6) {
       console.log('PIN Code:', pin);
-      navigation.navigate('Welcome');
+      navigation.navigate('MainScreen');
     } else {
       alert('Please enter a 6-digit PIN code.');
     }
