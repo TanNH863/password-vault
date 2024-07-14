@@ -45,22 +45,14 @@ export async function insertPasswordInfo(passwordInfo) {
 }
 
 export async function getPasswordInfo() {
-  // generate random id
-  const id = uuidv4();
-
-  // get current timestamp in ISO format
-  const created_at = new Date().toISOString();
-
   const passwordArray = [];
   const passwordinfos = await (await db).getAllAsync("SELECT * FROM passwordinfo");
 
   passwordinfos.forEach((passwordInfo) => passwordArray.push(
     new PasswordInfo(
-      id,
       passwordInfo.appname,
       passwordInfo.username,
       passwordInfo.password,
-      created_at
     )
   ));
 
