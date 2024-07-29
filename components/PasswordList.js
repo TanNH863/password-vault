@@ -1,28 +1,55 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { PasswordContext } from '../components/PasswordContext';
 
-export default function PasswordList({ passwords }) {
+export default function PasswordList() {
+  const { passwords, removePasswordInfo } = useContext(PasswordContext);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+
+  const handleDeletePress = (id) => {
+    Alert.alert(
+      "Delete Password",
+      "Are you sure you want to delete this password?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: () => removePasswordInfo(id)
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const toggleDropdown = (id) => {
+    setSelectedItemId(selectedItemId === id ? null : id);
+  };
+
   const renderPasswordItem = ({ item }) => (
-    <View style={styles.passwordItem}>
+    <View key={item.id} style={styles.passwordItemContainer}>
+      <TouchableOpacity style={styles.passwordItem} key={item.id} onPress={() => toggleDropdown(item.id)}>
       <View style={styles.passwordInfo}>
-        <Text style={styles.passwordText}>App/Site:</Text>
-        <Text>{item.appname}</Text>
-        <Text style={styles.passwordText}>Username:</Text>
-        <Text>{item.username}</Text>
-        <Text style={styles.passwordText}>Password:</Text>
-        <Text>{item.password}</Text>
+        <Text style={styles.passwordText}>App/Site: {item.appname}</Text>
+        <Text style={styles.passwordText}>Username: {item.username}</Text>
+        <Text style={styles.passwordText}>Password: {item.password}</Text>
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.revealButton}>
+    </TouchableOpacity>
+    {selectedItemId === item.id && (
+      <View style={styles.dropdownMenu}>
+        <TouchableOpacity style={styles.dropdownButton}>
           <Text style={styles.buttonText}>Reveal</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.editButton}>
+        <TouchableOpacity style={styles.dropdownButton}>
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton}>
+        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleDeletePress(item.id)}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
+    )}
     </View>
   );
   
@@ -37,48 +64,40 @@ export default function PasswordList({ passwords }) {
 };
 
 const styles = StyleSheet.create({
+  passwordItemContainer: {
+    marginBottom: 10,
+  },
   passwordItem: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#fff',
   },
   passwordInfo: {
     flex: 1,
   },
   passwordText: {
-    fontSize: 16,
-    marginBottom: 4,
+    fontWeight: 'bold',
   },
-  listContainer: {
-    paddingTop: 60,
+  dropdownMenu: {
+    padding: 16,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginTop: 4,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
+  dropdownButton: {
+    paddingVertical: 8,
   },
   buttonText: {
-    color: 'white',
+    color: '#007BFF',
   },
-  revealButton: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    borderRadius: 5,
-  },
-  editButton: {
-    backgroundColor: '#4CD964',
-    padding: 10,
-    borderRadius: 5,
-  },
-  deleteButton: {
-    backgroundColor: '#FF3B30',
-    padding: 10,
-    borderRadius: 5,
+  listContainer: {
+    padding: 16,
   },
 });

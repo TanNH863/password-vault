@@ -46,15 +46,22 @@ export async function insertPasswordInfo(passwordInfo) {
 
 export async function getPasswordInfo() {
   const passwordArray = [];
-  const passwordinfos = await (await db).getAllAsync("SELECT * FROM passwordinfo");
+  const passwordinfos = await (await db).getAllAsync("SELECT id, appname, username, password FROM passwordinfo");
 
   passwordinfos.forEach((passwordInfo) => passwordArray.push(
     new PasswordInfo(
+      passwordInfo.id,
       passwordInfo.appname,
       passwordInfo.username,
       passwordInfo.password,
+      passwordInfo.created_at
     )
   ));
 
   return passwordArray;
+}
+
+export async function deletePasswordInfo(id) {
+  const result = (await db).runAsync('DELETE FROM passwordinfo WHERE id = ?', [id]);
+  return result;
 }

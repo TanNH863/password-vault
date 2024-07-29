@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { setupDatabase, getPasswordInfo } from '../db/database'
+import { setupDatabase, getPasswordInfo, deletePasswordInfo } from '../db/database'
 
 export const PasswordContext = createContext();
 
@@ -16,8 +16,13 @@ export const PasswordProvider = ({ children }) => {
     setPasswords(passwords);
   };
 
+  const removePasswordInfo = async (id) => {
+    await deletePasswordInfo(id);
+    loadPasswordInfo();
+  }
+
   return (
-    <PasswordContext.Provider value={{ passwords, loadPasswordInfo }}>
+    <PasswordContext.Provider value={{ passwords, loadPasswordInfo, removePasswordInfo }}>
       {children}
     </PasswordContext.Provider>
   );

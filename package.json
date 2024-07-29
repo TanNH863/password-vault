@@ -26,6 +26,7 @@
     "react": "^18.2.0",
     "react-i18next": "^14.1.2",
     "react-native": "0.74.2",
+    "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "^2.17.1",
     "react-native-get-random-values": "^1.11.0",
     "react-native-locale-detector": "^1.0.1",

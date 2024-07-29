@@ -6,6 +6,7 @@ import { PasswordContext } from '../../components/PasswordContext';
 
 export default function AddPasswordScreen({ navigation }) {
   const { loadPasswordInfo } = useContext(PasswordContext);
+  const [id, setID] = useState('');
   const [appname, setAppname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +14,7 @@ export default function AddPasswordScreen({ navigation }) {
   const handleSave = async () => {
     if (appname && username && password) {
       try {
-        let passwordInfo = new PasswordInfo(appname, username, password);
+        let passwordInfo = new PasswordInfo(id, appname, username, password);
         await insertPasswordInfo(passwordInfo);
         Alert.alert('Success', 'Info added successfully');
         loadPasswordInfo();
