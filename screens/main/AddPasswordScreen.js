@@ -1,18 +1,47 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { insertPasswordInfo } from '../../db/database';
+import { insertPasswordInfo, updatePasswordInfo } from '../../db/database';
 import { PasswordInfo } from '../../models/PasswordInfo';
 import { PasswordContext } from '../../components/PasswordContext';
 
-export default function AddPasswordScreen({ navigation }) {
+export default function AddPasswordScreen({ navigation, route }) {
   const { loadPasswordInfo } = useContext(PasswordContext);
   const [id, setID] = useState('');
   const [appname, setAppname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.item) {
+      const { appname, username, password, id } = route.params.item;
+      setAppname(appname);
+      setUsername(username);
+      setPassword(password);
+      setID(id);
+      setIsEditing(true);
+    }
+  }, [route.params?.item]);
 
   const handleSave = async () => {
-    if (appname && username && password) {
+    if (!appname || !username || !password) {
+      Alert.alert('Error', 'All fields are required');
+      return;
+    }
+
+    if (isEditing) {
+      try {
+        await updatePasswordInfo(id, appname, username, password);
+        Alert.alert('Success', 'Info updated successfully');
+        loadPasswordInfo();
+        navigation.goBack();
+      }
+      catch (error) {
+        Alert.alert('Error', 'Failed to update info');
+        console.error('Error updating info: ', error);
+      }
+    }
+    else {
       try {
         let passwordInfo = new PasswordInfo(id, appname, username, password);
         await insertPasswordInfo(passwordInfo);
@@ -23,13 +52,12 @@ export default function AddPasswordScreen({ navigation }) {
         Alert.alert('Error', 'Failed to add info');
         console.error('Error adding info: ', error);
       }
-    } else {
-      Alert.alert('Warning', 'Please fill in all fields');
     }
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>{isEditing ? 'Edit' : 'Add'} Password</Text>
       <Text style={styles.label}>App or Site Name</Text>
       <TextInput
         style={styles.input}
@@ -50,7 +78,7 @@ export default function AddPasswordScreen({ navigation }) {
         secureTextEntry
       />
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Save</Text>
+        <Text style={styles.saveButtonText}>{isEditing ? 'Update' : 'Save'}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -62,6 +90,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
     backgroundColor: '#f7f7f7',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 40,
   },
   label: {
     fontSize: 16,

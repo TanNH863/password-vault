@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { PasswordContext } from '../components/PasswordContext';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PasswordList() {
   const { passwords, removePasswordInfo } = useContext(PasswordContext);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const navigation = useNavigation();
 
   const handleDeletePress = (id) => {
     Alert.alert(
@@ -28,6 +30,10 @@ export default function PasswordList() {
     setSelectedItemId(selectedItemId === id ? null : id);
   };
 
+  const handleEditPress = (item) => {
+    navigation.navigate('AddPasswordScreen', { item });
+  };
+
   const renderPasswordItem = ({ item }) => (
     <View key={item.id} style={styles.passwordItemContainer}>
       <TouchableOpacity style={styles.passwordItem} key={item.id} onPress={() => toggleDropdown(item.id)}>
@@ -39,10 +45,7 @@ export default function PasswordList() {
     </TouchableOpacity>
     {selectedItemId === item.id && (
       <View style={styles.dropdownMenu}>
-        <TouchableOpacity style={styles.dropdownButton}>
-          <Text style={styles.buttonText}>Reveal</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dropdownButton}>
+        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleEditPress(item)}>
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.dropdownButton} onPress={() => handleDeletePress(item.id)}>

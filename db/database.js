@@ -65,3 +65,15 @@ export async function deletePasswordInfo(id) {
   const result = (await db).runAsync('DELETE FROM passwordinfo WHERE id = ?', [id]);
   return result;
 }
+
+export async function updatePasswordInfo(id, appname, username, password) {
+  const result = (await db).runAsync(`
+    UPDATE passwordinfo
+    SET appname = ?,
+        username = ?,
+        password = ?
+    WHERE id = ?`,
+    [appname, username, password, id]
+  );
+  return result;
+}
