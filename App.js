@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ContextProviders } from './components/ContextProviders';
 import LanguageScreen from './screens/LanguageScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
+import GetInfoScreen from './screens/GetInfoScreen';
 import SignInScreen from './screens/SignInScreen';
 import PINCodeSetup from './screens/PINCodeSetup';
 import FingerprintSetup from './screens/FingerprintSetup';
@@ -48,9 +49,10 @@ export default function App() {
   return (
     <ContextProviders>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="LanguageSelect">
           <Stack.Screen name="LanguageSelect" component={LanguageScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="GetInfo" component={GetInfoScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignInScreen} options={{ headerShown: false }} />
           <Stack.Screen name="PINCodeSetup" component={PINCodeSetup} />
           <Stack.Screen name="FingerprintSetup" component={FingerprintSetup} />

@@ -1,15 +1,20 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { PasswordContext } from '../../components/PasswordContext';
+import { UsernameContext } from '../../components/UsernameContext';
 import PasswordList from '../../components/PasswordList';
 
 export default function MainScreen({ navigation }) {
   const { passwords, loadPasswordInfo } = useContext(PasswordContext);
+  const { username } = useContext(UsernameContext);
 
   useEffect(() => {
     loadPasswordInfo();
-  }, []);
+    navigation.setOptions({
+      title: `Welcome, ${username}`,
+    });
+  }, [navigation, username]);
 
   return (
     <View style={styles.container}>
@@ -79,5 +84,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 8,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 });

@@ -20,7 +20,7 @@ export default function WelcomeScreen({ navigation }) {
         <Feature icon={require('../assets/secure-password.png')} text={i18n.t('description4')} />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignUp')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('GetInfo')}>
         <Text style={styles.buttonText}>{i18n.t('get_started')}</Text>
       </TouchableOpacity>
       
