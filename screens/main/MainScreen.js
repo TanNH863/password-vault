@@ -41,27 +41,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f7f7f7',
     padding: 20,
   },
-  passwordItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#fff',
-  },
-  passwordInfo: {
-    flex: 1,
-  },
-  passwordText: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  listContainer: {
-    paddingTop: 60,
-  },
   emptyText: {
     textAlign: 'center',
     marginTop: 20,

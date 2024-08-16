@@ -5,6 +5,7 @@ export const PasswordContext = createContext();
 
 export const PasswordProvider = ({ children }) => {
   const [passwords, setPasswords] = useState([]);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   useEffect(() => {
     setupDatabase();
@@ -26,8 +27,12 @@ export const PasswordProvider = ({ children }) => {
     loadPasswordInfo();
   }
 
+  const setPasswordVisibility = (isVisible) => {
+    setIsPasswordVisible(isVisible);
+  };
+
   return (
-    <PasswordContext.Provider value={{ passwords, loadPasswordInfo, removePasswordInfo, editPasswordInfo }}>
+    <PasswordContext.Provider value={{ passwords, loadPasswordInfo, removePasswordInfo, editPasswordInfo, isPasswordVisible, setPasswordVisibility }}>
       {children}
     </PasswordContext.Provider>
   );
