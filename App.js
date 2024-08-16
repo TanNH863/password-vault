@@ -3,15 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ContextProviders } from './components/ContextProviders';
-import LanguageScreen from './screens/LanguageScreen';
-import WelcomeScreen from './screens/WelcomeScreen';
-import GetInfoScreen from './screens/GetInfoScreen';
-import SignInScreen from './screens/SignInScreen';
-import PINCodeSetup from './screens/PINCodeSetup';
-import FingerprintSetup from './screens/FingerprintSetup';
-import AddPasswordScreen from './screens/main/AddPasswordScreen';
-import MainScreen from './screens/main/MainScreen';
-import SettingScreen from './screens/main/SettingScreen';
+import { LanguageScreen, WelcomeScreen, GetInfoScreen, SignInScreen, PINCodeSetup, FingerprintSetup } from './screens';
+import { AddPasswordScreen, MainScreen, SettingScreen } from './screens/main'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
