@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { insertPasswordInfo, updatePasswordInfo } from '../../db/database';
 import { PasswordInfo } from '../../models/PasswordInfo';
 import { PasswordContext } from '../../components/PasswordContext';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function AddPasswordScreen({ navigation, route }) {
   const { loadPasswordInfo } = useContext(PasswordContext);
@@ -11,6 +12,16 @@ export default function AddPasswordScreen({ navigation, route }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const generatePassword = (length = 12) => {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+    let password = "";
+    for (let i = 0, n = charset.length; i < length; ++i) {
+      password += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return password;
+  }
 
   useEffect(() => {
     if (route.params?.item) {
@@ -55,6 +66,11 @@ export default function AddPasswordScreen({ navigation, route }) {
     }
   };
 
+  const handleGeneratePassword = () => {
+    const newPassword = generatePassword();
+    setPassword(newPassword);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{isEditing ? 'Edit' : 'Add'} Password</Text>
@@ -71,15 +87,26 @@ export default function AddPasswordScreen({ navigation, route }) {
         onChangeText={setUsername}
       />
       <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>{isEditing ? 'Update' : 'Save'}</Text>
-      </TouchableOpacity>
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!passwordVisible}
+        />
+        <TouchableOpacity style={styles.eyeContainer} onPress={() => setPasswordVisible(!passwordVisible)}>
+          <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={24} color="gray" />
+        </TouchableOpacity>
+      </View>
+      
+      <View style={styles.functionButtonContainer}>
+        <TouchableOpacity style={styles.functionButton} onPress={handleGeneratePassword}>
+          <Text style={styles.functionButtonText}>Auto Generate Password</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.functionButton} onPress={handleSave}>
+          <Text style={styles.functionButtonText}>{isEditing ? 'Update' : 'Save'}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -109,14 +136,36 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#fff',
   },
-  saveButton: {
+  passwordInput: {
+    flex: 1,
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    backgroundColor: '#fff',
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  eyeContainer: {
+    padding: 8,
+  },
+  functionButtonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 100,
+  },
+  functionButton: {
     backgroundColor: '#0377BC',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: 'center',
   },
-  saveButtonText: {
+  functionButtonText: {
     fontSize: 18,
     color: '#fff',
   },

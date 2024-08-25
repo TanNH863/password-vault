@@ -42,7 +42,7 @@ export default function App() {
   return (
     <ContextProviders>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LanguageSelect">
+        <Stack.Navigator initialRouteName="MainScreen">
           <Stack.Screen name="LanguageSelect" component={LanguageScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="GetInfo" component={GetInfoScreen} options={{ headerShown: false }} />

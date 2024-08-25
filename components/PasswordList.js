@@ -4,7 +4,7 @@ import { PasswordContext } from '../components/PasswordContext';
 import { useNavigation } from '@react-navigation/native';
 
 export default function PasswordList() {
-  const { passwords, removePasswordInfo } = useContext(PasswordContext);
+  const { passwords, removePasswordInfo, isPasswordVisible } = useContext(PasswordContext);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const navigation = useNavigation();
 
@@ -40,7 +40,9 @@ export default function PasswordList() {
       <View style={styles.passwordInfo}>
         <Text style={styles.passwordText}>App/Site: {item.appname}</Text>
         <Text style={styles.passwordText}>Username: {item.username}</Text>
-        <Text style={styles.passwordText}>Password: {item.password}</Text>
+        <Text style={styles.passwordText}>
+          Password: {isPasswordVisible ? item.password : '••••••••'}
+        </Text>
       </View>
     </TouchableOpacity>
     {selectedItemId === item.id && (
