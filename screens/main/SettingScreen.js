@@ -1,19 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Switch, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
 import { PasswordContext } from '../../components/PasswordContext'
+import { Backup, Restore } from '../../utils/BackupRestore';
 
 export default function SettingScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { setPasswordVisibility } = useContext(PasswordContext);
+  const { passwords, loadPasswordInfo } = useContext(PasswordContext);
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
     setPasswordVisibility(!isPasswordVisible);
-  };
-
-  const handleGoogleSync = () => {
-    Alert.alert('Syncing...', 'Syncing with Google Password Manager...');
-    // Here, implement the syncing logic with Google Password Manager.
   };
 
   return (
@@ -25,9 +22,12 @@ export default function SettingScreen() {
           onValueChange={togglePasswordVisibility}
         />
       </View>
-      
-      <TouchableOpacity style={styles.syncButton} onPress={handleGoogleSync}>
-        <Text style={styles.syncButtonText}>Sync with Google Password Manager</Text>
+      <TouchableOpacity style={styles.button} onPress={() => Backup(passwords)}>
+        <Text style={styles.buttonText}>Backup Passwords</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={() => Restore(loadPasswordInfo)}>
+        <Text style={styles.buttonText}>Restore Passwords</Text>
       </TouchableOpacity>
     </View>
   );
@@ -48,14 +48,14 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 18,
   },
-  syncButton: {
-    backgroundColor: '#4285F4',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
+  button: {
+    padding: 15,
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+    marginVertical: 10,
   },
-  syncButtonText: {
+  buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
   },
 });
