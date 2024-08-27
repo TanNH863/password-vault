@@ -13,6 +13,7 @@ export default function AddPasswordScreen({ navigation, route }) {
   const [password, setPassword] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [strength, setStrength] = useState(0);
 
   const generatePassword = (length = 12) => {
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
@@ -22,6 +23,52 @@ export default function AddPasswordScreen({ navigation, route }) {
     }
     return password;
   }
+
+  const checkPasswordStrength = (password) => {
+    let strength = 0;
+  
+    if (password.length > 7) strength += 1; // At least 8 characters
+    if (password.match(/[A-Z]/)) strength += 1; // Has uppercase letter
+    if (password.match(/[0-9]/)) strength += 1; // Has a number
+    if (password.match(/[^a-zA-Z0-9]/)) strength += 1; // Has special character
+  
+    return strength;
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    setStrength(checkPasswordStrength(text));
+  };
+
+  const getStrengthLabel = () => {
+    switch (strength) {
+      case 1:
+        return 'Weak';
+      case 2:
+        return 'Fair';
+      case 3:
+        return 'Strong';
+      case 4:
+        return 'Very Strong';
+      default:
+        return 'Too Short';
+    }
+  };
+
+  const getStrengthColor = () => {
+    switch (strength) {
+      case 1:
+        return 'red';
+      case 2:
+        return 'brown';
+      case 3:
+        return 'orange';
+      case 4:
+        return 'green';
+      default:
+        return 'gray';
+    }
+  };
 
   useEffect(() => {
     if (route.params?.item) {
@@ -91,13 +138,14 @@ export default function AddPasswordScreen({ navigation, route }) {
         <TextInput
           style={styles.passwordInput}
           value={password}
-          onChangeText={setPassword}
+          onChangeText={handlePasswordChange}
           secureTextEntry={!passwordVisible}
         />
         <TouchableOpacity style={styles.eyeContainer} onPress={() => setPasswordVisible(!passwordVisible)}>
           <Ionicons name={passwordVisible ? "eye" : "eye-off"} size={24} color="gray" />
         </TouchableOpacity>
       </View>
+      <Text style={{ color: getStrengthColor() }}>{getStrengthLabel()}</Text>
       
       <View style={styles.functionButtonContainer}>
         <TouchableOpacity style={styles.functionButton} onPress={handleGeneratePassword}>
@@ -149,6 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+    marginTop: 1
   },
   eyeContainer: {
     padding: 8,
