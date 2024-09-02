@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { PasswordContext } from '../components/PasswordContext';
+import { PasswordContext } from '../contexts/PasswordContext';
 import { useNavigation } from '@react-navigation/native';
 
 export default function PasswordList() {

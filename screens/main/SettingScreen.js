@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, Switch, TouchableOpacity, StyleSheet } from 'react-native';
-import { PasswordContext } from '../../components/PasswordContext'
+import { PasswordContext } from '../../contexts/PasswordContext'
 import { Backup, Restore } from '../../utils/BackupRestore';
 
 export default function SettingScreen() {

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { insertPasswordInfo, updatePasswordInfo } from '../../db/database';
 import { PasswordInfo } from '../../models/PasswordInfo';
-import { PasswordContext } from '../../components/PasswordContext';
+import { PasswordContext } from '../../contexts/PasswordContext';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AddPasswordScreen({ navigation, route }) {

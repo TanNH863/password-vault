@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { UsernameContext } from '../components/UsernameContext';
+import { UsernameContext } from '../contexts/UsernameContext';
 
 export default function GetInfoScreen({ navigation }) {
   const [input, setInput] = useState('');

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
-import { LanguageContext } from '../components/LanguageContext';
+import { LanguageContext } from '../contexts/LanguageContext';
 
 export default function LanguageScreen({ navigation }) {
   const { changeLanguage } = useContext(LanguageContext);

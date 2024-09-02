@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Feature from '../components/Feature'
 import i18n from '../components/Translations';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { LanguageContext } from '../components/LanguageContext';
+import { LanguageContext } from '../contexts/LanguageContext';
 
 export default function WelcomeScreen({ navigation }) {
   const { language } = useContext(LanguageContext);
