@@ -21,11 +21,6 @@ export async function setupDatabase() {
         title TEXT,
         content TEXT
       );
-      CREATE TABLE IF NOT EXISTS documents (
-        id TEXT PRIMARY KEY NOT NULL,
-        filename TEXT,
-        filedata BLOB
-      );
     `);
     console.log('Tables created successfully');
   }
@@ -70,22 +65,6 @@ export async function addSecureNote(note) {
   return result;
 }
 
-export async function addDocument(doc) {
-  // generate random id
-  const id = uuidv4();
-
-  const result = (await db).runAsync(
-    `INSERT INTO documents (id, filename, filepath) VALUES (?, ?, ?)`,
-    [
-      id,
-      doc.filename,
-      doc.filepath
-    ]
-  )
-
-  return result;
-}
-
 export async function getPasswordInfo() {
   const passwordArray = [];
   const passwordinfos = await (await db).getAllAsync("SELECT id, appname, username, password FROM passwordinfo");
@@ -118,23 +97,13 @@ export async function getSecureNotes() {
   return noteArray;
 }
 
-export async function getDocumentList() {
-  const documentList = [];
-  const documents = await (await db).getAllAsync("SELECT id, filename, filedata FROM documents");
-
-  documents.forEach((doc) => documentList.push(
-    new Documents(
-      doc.id,
-      doc.filename,
-      doc.filedata
-    )
-  ));
-
-  return documentList;
-}
-
 export async function deletePasswordInfo(id) {
   const result = (await db).runAsync('DELETE FROM passwordinfo WHERE id = ?', [id]);
+  return result;
+}
+
+export async function deleteNote(id) {
+  const result = (await db).runAsync('DELETE FROM securenotes WHERE id = ?', [id]);
   return result;
 }
 

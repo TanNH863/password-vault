@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import { PasswordContext } from '../../contexts/PasswordContext';
 import { NoteContext } from '../../contexts/NoteContext';
-import { DocumentsContext } from '../../contexts/DocumentsContext';
 import { UsernameContext } from '../../contexts/UsernameContext';
 import PasswordList from '../../components/PasswordList';
 import NoteList from '../../components/NoteList';
-import DocumentsList from '../../components/DocumentsList';
 
 export default function MainScreen({ navigation }) {
   const [selectedType, setSelectedType] = useState('passwords');
+  const [modalVisible, setModalVisible] = useState(false);
   const { passwords, loadPasswordInfo } = useContext(PasswordContext);
   const { notes, loadSecureNotes } = useContext(NoteContext);
-  const { documents, loadDocumentList } = useContext(DocumentsContext);
   const { username } = useContext(UsernameContext);
 
   useEffect(() => {
@@ -33,10 +31,11 @@ export default function MainScreen({ navigation }) {
       case 'notes':
         loadSecureNotes();
         break;
-      case 'documents':
-        loadDocumentList();
-        break;
     }
+  };
+
+  const handleAddButtonPress = () => {
+    setModalVisible(true);
   };
 
   return (
@@ -46,7 +45,6 @@ export default function MainScreen({ navigation }) {
         items={[
           { label: 'Passwords', value: 'passwords' },
           { label: 'Notes', value: 'notes' },
-          { label: 'Documents', value: 'documents' },
         ]}
         style={pickerSelectStyles}
         value={selectedType}
@@ -68,21 +66,49 @@ export default function MainScreen({ navigation }) {
         ) : ( <NoteList notes={notes} /> )
       )}
 
-      {selectedType === 'documents' && (
-        documents.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No documents added yet</Text>
-          </View>
-        ) : (
-          <DocumentsList documents={documents} />
-        )
-      )}
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate('AddPasswordScreen')}
+        onPress={handleAddButtonPress}
       >
         <Ionicons name="add-outline" size={24} color="#fff" />
       </TouchableOpacity>
+
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Add New</Text>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate('AddPasswordScreen');
+              }}
+            >
+              <Text style={styles.modalButtonText}>Password</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate('AddNoteScreen');
+              }}
+            >
+              <Text style={styles.modalButtonText}>Note</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.modalButton, { backgroundColor: '#ddd' }]}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -97,7 +123,7 @@ const pickerSelectStyles = {
     borderRadius: 4,
     color: 'black',
     paddingRight: 30,
-    marginBottom: 10, // Add some margin to the dropdown
+    marginBottom: 10,
   },
   inputAndroid: {
     fontSize: 16,
@@ -108,7 +134,7 @@ const pickerSelectStyles = {
     borderRadius: 8,
     color: 'black',
     paddingRight: 30,
-    marginBottom: 10, // Add some margin to the dropdown
+    marginBottom: 10,
   },
 };
 
@@ -146,4 +172,35 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalButton: {
+    backgroundColor: '#007BFF',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  cancelButtonText: {
+    color: '#333',
+    fontSize: 16
+  }
 });

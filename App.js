@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ContextProviders } from './contexts/ContextProviders';
 import { LanguageScreen, WelcomeScreen, GetInfoScreen, SignInScreen, PINCodeSetup, FingerprintSetup } from './screens';
-import { AddPasswordScreen, MainScreen, SettingScreen } from './screens/main'
+import { AddPasswordScreen, AddNoteScreen, MainScreen, NoteViewScreen, SettingScreen } from './screens/main'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
@@ -51,6 +51,8 @@ export default function App() {
           <Stack.Screen name="FingerprintSetup" component={FingerprintSetup} />
           <Stack.Screen name="MainScreen" component={AppMainScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="AddPasswordScreen" component={AddPasswordScreen} />
+          <Stack.Screen name="AddNoteScreen" component={AddNoteScreen} />
+          <Stack.Screen name="NoteViewScreen" component={NoteViewScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </ContextProviders>

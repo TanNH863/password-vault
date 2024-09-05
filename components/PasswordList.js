@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
     color: '#007BFF',
   },
   listContainer: {
-    padding: 16,
+    padding: 10,
   },
 });

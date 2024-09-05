@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { setupDatabase, getSecureNotes, addSecureNote } from '../db/database'
+import { setupDatabase, getSecureNotes, deleteNote } from '../db/database'
 
 export const NoteContext = createContext();
 
@@ -16,16 +16,13 @@ export const NoteProvider = ({ children }) => {
         setNotes(notes);
     };
 
-    const addNote = async (title, content) => {
-        await addSecureNote({
-          title,
-          content,
-        });
+    const removeNote = async (id) => {
+        await deleteNote(id);
         loadSecureNotes();
-    };
+    }
 
     return (
-        <NoteContext.Provider value={{ notes, addNote, loadSecureNotes }}>
+        <NoteContext.Provider value={{ notes, loadSecureNotes, removeNote }}>
           {children}
         </NoteContext.Provider>
     );
