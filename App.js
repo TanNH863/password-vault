@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ContextProviders } from './contexts/ContextProviders';
 import { LanguageScreen, WelcomeScreen, GetInfoScreen, SignInScreen, PINCodeSetup, FingerprintSetup } from './screens';
-import { AddPasswordScreen, AddNoteScreen, MainScreen, NoteViewScreen, SettingScreen } from './screens/main'
+import { AddPasswordScreen, AddNoteScreen, MainScreen, NoteViewScreen, SettingScreen, UserSupportScreen } from './screens/main'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
@@ -14,13 +14,15 @@ function AppMainScreen() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           if (route.name === 'Home') {
-            iconName = 'home-outline';
+            iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Settings') {
-            iconName = 'settings-outline';
+            iconName = focused ? 'settings' : 'settings-outline';
+          } else if (route.name == 'Support') {
+            iconName = focused ? 'help-circle' : 'help-circle-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -34,6 +36,7 @@ function AppMainScreen() {
     >
       <Tab.Screen name="Home" component={MainScreen} />
       <Tab.Screen name="Settings" component={SettingScreen} />
+      <Tab.Screen name="Support" component={UserSupportScreen} />
     </Tab.Navigator>
   );
 }
