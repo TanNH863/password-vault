@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Text, Button } from 'react-native';
-import { NoteContext } from '../../components/NoteContext';
+import { NoteContext } from '../../contexts';
 
 export default function NoteScreen({ navigation }) {
     const [note, setNote] = useState('');

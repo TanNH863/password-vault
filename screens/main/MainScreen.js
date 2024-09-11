@@ -167,11 +167,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 8,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
