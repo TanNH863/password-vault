@@ -118,3 +118,14 @@ export async function updatePasswordInfo(id, appname, username, password) {
   );
   return result;
 }
+
+export async function updateNote(id, title, content) {
+  const result = (await db).runAsync(`
+    UPDATE passwordinfo
+    SET title = ?,
+        content = ?
+    WHERE id = ?`,
+    [title, content, id]
+  );
+  return result;
+}
