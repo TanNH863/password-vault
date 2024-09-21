@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { UsernameContext } from '../contexts/UsernameContext';
+import i18n from '../components/Translations';
 
 export default function GetInfoScreen({ navigation }) {
   const [input, setInput] = useState('');
@@ -17,7 +18,7 @@ export default function GetInfoScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>How should we call you?</Text>
+      <Text style={styles.title}>{i18n.t('greetings')}</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -25,7 +26,7 @@ export default function GetInfoScreen({ navigation }) {
         onChangeText={setInput}
       />
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
-        <Text style={styles.continueButtonText}>Continue</Text>
+        <Text style={styles.continueButtonText}>{i18n.t('continue')}</Text>
       </TouchableOpacity>
     </View>
   );

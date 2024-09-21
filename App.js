@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ContextProviders } from './contexts/ContextProviders';
 import { LanguageScreen, WelcomeScreen, GetInfoScreen, SignInScreen, PINCodeSetup, FingerprintSetup } from './screens';
 import { AddPasswordScreen, AddNoteScreen, MainScreen, NoteViewScreen, SettingScreen, UserSupportScreen } from './screens/main'
@@ -42,10 +43,36 @@ function AppMainScreen() {
 }
 
 export default function App() {
+  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
+
+  useEffect(() => {
+    const checkFirstLaunch = async () => {
+      try {
+        const appData = await AsyncStorage.getItem('isFirstLaunch');
+        if (appData === null) {
+          // If no data is found, this is the first launch
+          await AsyncStorage.setItem('isFirstLaunch', 'false');
+          setIsFirstLaunch(true);
+        } else {
+          setIsFirstLaunch(false);
+        }
+      } catch (error) {
+        console.error("Error checking first launch status", error);
+      }
+    };
+
+    checkFirstLaunch();
+  }, []);
+
+  if (isFirstLaunch === null) {
+    // Optionally, show a loading screen while checking
+    return null; // Or return a loading indicator
+  }
+
   return (
     <ContextProviders>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen">
+        <Stack.Navigator initialRouteName="LanguageScreen">
           <Stack.Screen name="LanguageSelect" component={LanguageScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="GetInfo" component={GetInfoScreen} options={{ headerShown: false }} />

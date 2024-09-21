@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 
@@ -6,7 +6,7 @@ export default function FingerprintSetup({ navigation }) {
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 
   // Check if biometric authentication is available
-  React.useEffect(() => {
+  useEffect(() => {
     const checkBiometricSupport = async () => {
       const compatible = await LocalAuthentication.hasHardwareAsync();
       setIsBiometricSupported(compatible);
@@ -39,13 +39,13 @@ export default function FingerprintSetup({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Set Up Fingerprint Authentication</Text>
+      <Text style={styles.title}>{i18n.t('fingerprint')}</Text>
       {isBiometricSupported ? (
         <TouchableOpacity style={styles.fingerprintButton} onPress={handleFingerprintSetup}>
-          <Text style={styles.fingerprintButtonText}>Set Up Fingerprint</Text>
+          <Text style={styles.fingerprintButtonText}>{i18n.t('fingerprint_setup')}</Text>
         </TouchableOpacity>
       ) : (
-        <Text style={styles.errorText}>Fingerprint authentication is not supported on this device.</Text>
+        <Text style={styles.errorText}>{i18n.t('fingerprint_error')}</Text>
       )}
     </View>
   );

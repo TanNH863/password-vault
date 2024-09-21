@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import i18n from '../components/Translations';
 
 export default function PINCodeSetup({ navigation }) {
   const [pin, setPin] = useState('');
@@ -25,7 +26,7 @@ export default function PINCodeSetup({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Set Up Your 6-Digit PIN Code</Text>
+      <Text style={styles.title}>{i18n.t('pin_setup')}</Text>
       <View style={styles.pinContainer}>
         {Array.from({ length: 6 }).map((_, index) => (
           <View key={index} style={styles.pinCircle}>
