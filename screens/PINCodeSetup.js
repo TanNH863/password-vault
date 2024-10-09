@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import i18n from '../components/Translations';
 
-export default function PINCodeSetup({ navigation }) {
+export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
   const [pin, setPin] = useState('');
 
   const handleNumberPress = (number) => {
@@ -15,9 +15,10 @@ export default function PINCodeSetup({ navigation }) {
     setPin(pin.slice(0, -1));
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (pin.length === 6) {
       console.log('PIN Code:', pin);
+      await handleFinishOnboarding();
       navigation.navigate('MainScreen');
     } else {
       alert('Please enter a 6-digit PIN code.');

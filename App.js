@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ContextProviders } from './contexts/ContextProviders';
 import { LanguageScreen, WelcomeScreen, GetInfoScreen, SignInScreen, PINCodeSetup, FingerprintSetup } from './screens';
 import { AddPasswordScreen, AddNoteScreen, MainScreen, NoteViewScreen, SettingScreen, UserSupportScreen } from './screens/main'
@@ -47,38 +48,51 @@ export default function App() {
 
   useEffect(() => {
     const checkFirstLaunch = async () => {
-      try {
-        const appData = await AsyncStorage.getItem('isFirstLaunch');
-        if (appData === null) {
-          // If no data is found, this is the first launch
-          await AsyncStorage.setItem('isFirstLaunch', 'false');
-          setIsFirstLaunch(true);
-        } else {
-          setIsFirstLaunch(false);
-        }
-      } catch (error) {
-        console.error("Error checking first launch status", error);
+      const value = await AsyncStorage.getItem('isFirstLaunch');
+      if (value === null) {
+        setIsFirstLaunch(true);
+      }
+      else {
+        setIsFirstLaunch(false);
       }
     };
 
-    checkFirstLaunch();
+    checkFirstLaunch().catch((error) => {
+      console.error("Error checking first launch status", error);
+    });
   }, []);
 
+  const handleFinishOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem('isFirstLaunch', 'false');
+      setIsFirstLaunch(false);
+    } catch (error) {
+      console.error('Error setting first launch flag', error);
+    }
+  };
+
   if (isFirstLaunch === null) {
-    // Optionally, show a loading screen while checking
-    return null; // Or return a loading indicator
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
   return (
     <ContextProviders>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LanguageScreen">
-          <Stack.Screen name="LanguageSelect" component={LanguageScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="GetInfo" component={GetInfoScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="SignUp" component={SignInScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="PINCodeSetup" component={PINCodeSetup} />
-          <Stack.Screen name="FingerprintSetup" component={FingerprintSetup} />
+        <Stack.Navigator initialRouteName={isFirstLaunch ? "LanguageSelect" : "MainScreen"}>
+          {isFirstLaunch && (
+            <>
+              <Stack.Screen name="LanguageSelect" component={LanguageScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="GetInfo" component={GetInfoScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="SignUp" component={SignInScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="PINCodeSetup" component={(props) => <PINCodeSetup {...props} handleFinishOnboarding={handleFinishOnboarding} />} />
+              <Stack.Screen name="FingerprintSetup" component={(props) => <FingerprintSetup {...props} handleFinishOnboarding={handleFinishOnboarding} />} />
+            </>
+          )}
           <Stack.Screen name="MainScreen" component={AppMainScreen} options={{ headerShown: false }}/>
           <Stack.Screen name="AddPasswordScreen" component={AddPasswordScreen} />
           <Stack.Screen name="AddNoteScreen" component={AddNoteScreen} />
@@ -88,3 +102,11 @@ export default function App() {
     </ContextProviders>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

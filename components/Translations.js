@@ -23,27 +23,6 @@ const translations = {
     fingerprint_setup: "Set Up Fingerprint",
     fingerprint_error: "Fingerprint authentication is not supported on this device."
   },
-  es: {
-    welcome: "Bienvenido a Password Vault",
-    secure: "Tu bóveda segura para todo lo digital",
-    description1: "Almacenamiento seguro de contraseñas",
-    description2: "Sincronización multiplataforma",
-    description3: "Autenticación biométrica",
-    description4: "Generador de contraseñas",
-    get_started: "Comenzar",
-    language_select: "Selecciona tu idioma",
-    image_password: "Contraseña de imagen",
-    fingerprint: "Huella digital",
-    face_recognition: "Reconocimiento facial",
-    back_to_welcome: "Volver a Bienvenida",
-    privacy_text: "Sus datos se cifran y almacenan de forma segura.",
-    greetings: "¿Cómo deberíamos llamarte?",
-    continue: "Continuar",
-    pin_setup: "Configure su código PIN de 6 dígitos",
-    fingerprint: "Configurar la autenticación de huellas dactilares",
-    fingerprint_setup: "Configurar huella dactilar",
-    fingerprint_error: "La autenticación por huella dactilar no es compatible con este dispositivo."
-  },
   vi: {
     welcome: "Chào mừng đến Password Vault",
     secure: "Kho chứa an toàn cho các thông tin số hóa",

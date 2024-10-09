@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 
-export default function FingerprintSetup({ navigation }) {
+export default function FingerprintSetup({ navigation, handleFinishOnboarding }) {
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
 
   // Check if biometric authentication is available
@@ -31,6 +31,7 @@ export default function FingerprintSetup({ navigation }) {
 
     if (result.success) {
       Alert.alert('Authentication Successful', 'You have successfully set up fingerprint authentication.');
+      await handleFinishOnboarding();
       navigation.navigate('MainScreen');
     } else {
       Alert.alert('Authentication Failed', 'Please try again.');
