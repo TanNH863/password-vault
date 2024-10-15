@@ -2,13 +2,14 @@ import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { NoteContext } from '../../contexts/NoteContext'
 import { SecureNotes } from '../../models';
-import { addSecureNote } from '../../db/database';
+import { addSecureNote, updateNote } from '../../db/database';
 
 export default function AddNoteScreen({ navigation, route }) {
   const { loadSecureNotes } = useContext(NoteContext);
   const [id, setID] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (route.params?.item) {
@@ -16,24 +17,41 @@ export default function AddNoteScreen({ navigation, route }) {
       setTitle(title);
       setContent(content);
       setID(id);
+      setIsEditing(true);
     }
   }, [route.params?.item]);
 
   const handleSave = async () => {
     if (!title || !content) {
-        Alert.alert('Error', 'Please fill out both fields');
-        return;
+      Alert.alert('Error', 'Please fill out both fields');
+      return;
     }
-    try {
+
+    if (isEditing) {
+      try {
+        await updateNote(id, title, content);
+        Alert.alert('Success', 'Note updated successfully');
+        loadSecureNotes();
+        navigation.goBack();
+      }
+      catch (error) {
+        Alert.alert('Error', 'Failed to update info');
+        console.error('Error updating info: ', error);
+      }
+      
+    }
+    else {
+      try {
         let note = new SecureNotes(id, title, content);
         await addSecureNote(note);
         Alert.alert('Success', 'Note added successfully');
         loadSecureNotes();
         navigation.goBack();
-    }
-    catch (error) {
+      }
+      catch (error) {
         Alert.alert('Error', 'Failed to add note');
         console.error('Error adding note: ', error);
+      }
     }
   }
 

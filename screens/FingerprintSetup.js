@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
+import * as SecureStore from 'expo-secure-store';
 
 export default function FingerprintSetup({ navigation, handleFinishOnboarding }) {
   const [isBiometricSupported, setIsBiometricSupported] = useState(false);
@@ -30,6 +31,7 @@ export default function FingerprintSetup({ navigation, handleFinishOnboarding })
     });
 
     if (result.success) {
+      await SecureStore.setItemAsync('authMethod', 'Fingerprint');
       Alert.alert('Authentication Successful', 'You have successfully set up fingerprint authentication.');
       await handleFinishOnboarding();
       navigation.navigate('MainScreen');

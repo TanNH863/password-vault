@@ -2,14 +2,16 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { UsernameContext } from '../contexts/UsernameContext';
 import i18n from '../components/Translations';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function GetInfoScreen({ navigation }) {
   const [input, setInput] = useState('');
   const { setUsername } = useContext(UsernameContext);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (input.trim()) {
       setUsername(input);
+      await AsyncStorage.setItem('username', input);
       navigation.navigate('SignUp');
     } else {
       alert('Please enter a valid username.');

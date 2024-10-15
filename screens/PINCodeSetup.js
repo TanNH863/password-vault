@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import i18n from '../components/Translations';
+import * as SecureStore from 'expo-secure-store';
 
 export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
   const [pin, setPin] = useState('');
@@ -17,7 +18,9 @@ export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
 
   const handleContinue = async () => {
     if (pin.length === 6) {
-      console.log('PIN Code:', pin);
+      await SecureStore.setItemAsync('authMethod', 'PIN');
+      await SecureStore.setItemAsync('user_pin', pin);
+      console.log('PIN Code saved:', pin);
       await handleFinishOnboarding();
       navigation.navigate('MainScreen');
     } else {

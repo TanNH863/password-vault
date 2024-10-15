@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import { PasswordContext } from '../../contexts/PasswordContext';
@@ -13,14 +14,20 @@ export default function MainScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const { passwords, loadPasswordInfo } = useContext(PasswordContext);
   const { notes, loadSecureNotes } = useContext(NoteContext);
-  const { username } = useContext(UsernameContext);
+  const { username, setUsername } = useContext(UsernameContext);
 
   useEffect(() => {
+    const loadStoredUsername = async () => {
+      const storedUsername = await AsyncStorage.getItem('username');
+      if (storedUsername) {
+        setUsername(storedUsername);
+        navigation.setOptions({ title: `Welcome, ${storedUsername}` });
+      }
+    };
+
     loadPasswordInfo();
-    navigation.setOptions({
-      title: `Welcome, ${username}`,
-    });
-  }, [navigation, username]);
+    loadStoredUsername();
+  }, [navigation]);
 
   const handleSelectionChange = (value) => {
     setSelectedType(value);
