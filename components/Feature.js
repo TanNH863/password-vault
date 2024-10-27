@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
 
 export default function Feature({ icon, text }) {
   return (
@@ -12,8 +12,8 @@ export default function Feature({ icon, text }) {
 
 const styles = StyleSheet.create({
   feature: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   featureIcon: {
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
-})
+});

@@ -1,7 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { Alert, View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { NoteContext } from '../contexts/NoteContext';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useContext } from "react";
+import {
+  Alert,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { NoteContext } from "../contexts/NoteContext";
+import { useNavigation } from "@react-navigation/native";
 
 export default function NoteList() {
   const { notes, removeNote } = useContext(NoteContext);
@@ -15,12 +22,12 @@ export default function NoteList() {
       [
         {
           text: "Cancel",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Delete",
-          onPress: () => removeNote(id)
-        }
+          onPress: () => removeNote(id),
+        },
       ],
       { cancelable: false }
     );
@@ -31,34 +38,49 @@ export default function NoteList() {
   };
 
   const handleEditPress = (item) => {
-    navigation.navigate('AddNoteScreen', { item });
+    navigation.navigate("AddNoteScreen", { item });
   };
 
   const handleViewPress = (item) => {
-    navigation.navigate('NoteViewScreen', { note: item });
-  }
+    navigation.navigate("NoteViewScreen", { note: item });
+  };
 
   const renderNoteItem = ({ item }) => (
     <View key={item.id} style={styles.noteItemContainer}>
-      <TouchableOpacity style={styles.noteItem} key={item.id} onPress={() => toggleDropdown(item.id)}>
+      <TouchableOpacity
+        style={styles.noteItem}
+        key={item.id}
+        onPress={() => toggleDropdown(item.id)}
+      >
         <View style={styles.noteInfo}>
           <Text style={styles.noteTitle}>{item.title}</Text>
           <Text style={styles.noteContent}>{item.content}</Text>
+          <Text style={styles.noteContent}>Created: {item.created_at}</Text>
+          <Text style={styles.noteContent}>{item.category}</Text>
         </View>
       </TouchableOpacity>
       {selectedItemId === item.id && (
-      <View style={styles.dropdownMenu}>
-        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleViewPress(item)}>
-          <Text style={styles.buttonText}>View</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleEditPress(item)}>
-          <Text style={styles.buttonText}>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleDeletePress(item.id)}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-    )}
+        <View style={styles.dropdownMenu}>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => handleViewPress(item)}
+          >
+            <Text style={styles.buttonText}>View</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => handleEditPress(item)}
+          >
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => handleDeletePress(item.id)}
+          >
+            <Text style={styles.buttonText}>Delete</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 
@@ -78,41 +100,41 @@ const styles = StyleSheet.create({
   },
   noteItem: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ddd',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    borderColor: "#ddd",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   noteInfo: {
     flex: 1,
   },
   dropdownMenu: {
     padding: 16,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     marginTop: 4,
   },
   dropdownButton: {
     paddingVertical: 8,
   },
   buttonText: {
-    color: '#007BFF',
+    color: "#007BFF",
   },
   listContainer: {
     padding: 10,
   },
   noteTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   noteContent: {
     fontSize: 14,
-    color: '#333',
+    color: "#333",
   },
 });

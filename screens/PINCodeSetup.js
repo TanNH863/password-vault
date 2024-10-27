@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import i18n from '../components/Translations';
-import * as SecureStore from 'expo-secure-store';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import i18n from "../components/Translations";
+import * as SecureStore from "expo-secure-store";
 
 export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState("");
 
   const handleNumberPress = (number) => {
     if (pin.length < 6) {
@@ -18,41 +18,41 @@ export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
 
   const handleContinue = async () => {
     if (pin.length === 6) {
-      await SecureStore.setItemAsync('authMethod', 'PIN');
-      await SecureStore.setItemAsync('user_pin', pin);
-      console.log('PIN Code saved:', pin);
+      await SecureStore.setItemAsync("authMethod", "PIN");
+      await SecureStore.setItemAsync("user_pin", pin);
+      console.log("PIN Code saved:", pin);
       await handleFinishOnboarding();
-      navigation.navigate('MainScreen');
+      navigation.navigate("MainScreen");
     } else {
-      alert('Please enter a 6-digit PIN code.');
+      alert("Please enter a 6-digit PIN code.");
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{i18n.t('pin_setup')}</Text>
+      <Text style={styles.title}>{i18n.t("pin_setup")}</Text>
       <View style={styles.pinContainer}>
         {Array.from({ length: 6 }).map((_, index) => (
           <View key={index} style={styles.pinCircle}>
-            <Text style={styles.pinText}>{pin[index] || ''}</Text>
+            <Text style={styles.pinText}>{pin[index] || ""}</Text>
           </View>
         ))}
       </View>
       <View style={styles.numberPad}>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, '#', 0, 'Delete'].map((item) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, "#", 0, "Delete"].map((item) => (
           <TouchableOpacity
             key={item}
             style={[
               styles.numberButton,
-              item === '#' && styles.hashButton,
-              item === 'Delete' && styles.deleteButton,
+              item === "#" && styles.hashButton,
+              item === "Delete" && styles.deleteButton,
             ]}
             onPress={() => {
               switch (item) {
-                case 'Delete':
+                case "Delete":
                   handleDeletePress();
                   break;
-                case '#':
+                case "#":
                   handleContinue();
                   break;
                 default:
@@ -60,10 +60,14 @@ export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
               }
             }}
           >
-            <Text style={[
-              styles.numberButtonText,
-              item === 'Delete' && styles.deleteButtonText,
-            ]}>{item}</Text>
+            <Text
+              style={[
+                styles.numberButtonText,
+                item === "Delete" && styles.deleteButtonText,
+              ]}
+            >
+              {item}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -74,20 +78,20 @@ export default function PINCodeSetup({ navigation, handleFinishOnboarding }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f7f7f7',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f7f7f7",
     padding: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 40,
   },
   pinContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
     marginBottom: 40,
   },
   pinCircle: {
@@ -95,41 +99,41 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
   },
   pinText: {
     fontSize: 24,
   },
   numberPad: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    width: '80%',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    width: "80%",
     marginBottom: 20,
   },
   numberButton: {
-    width: '30%',
+    width: "30%",
     aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   hashButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
   },
   deleteButton: {
-    backgroundColor: '#ff0000',
+    backgroundColor: "#ff0000",
   },
   numberButtonText: {
     fontSize: 24,
   },
   deleteButtonText: {
-    color: '#fff',
+    color: "#fff",
   },
 });

@@ -1,31 +1,32 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import i18n from '../components/Translations';
 
 export default function SignInScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
-      <Text style={styles.subtitle}>Choose your preferred sign-in method</Text>
+      <Text style={styles.title}>{i18n.t('signin')}</Text>
+      <Text style={styles.subtitle}>{i18n.t('signin_method')}</Text>
       
       <View style={styles.methodContainer}>
         <TouchableOpacity style={styles.method} onPress={() => navigation.navigate('PINCodeSetup')}>
           <Image source={require('../assets/pin-code.png')} style={styles.methodIcon} />
-          <Text style={styles.methodText}>PIN Code</Text>
+          <Text style={styles.methodText}>{i18n.t('pin_code')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.method} onPress={() => navigation.navigate('FingerprintSetup')}>
           <Image source={require('../assets/fingerprint.png')} style={styles.methodIcon} />
-          <Text style={styles.methodText}>Fingerprint</Text>
+          <Text style={styles.methodText}>{i18n.t('fingerprint')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.method} onPress={() => navigation.navigate('FaceRecognitionSetup')}>
           <Image source={require('../assets/face-recog.png')} style={styles.methodIcon} />
-          <Text style={styles.methodText}>Face Recognition</Text>
+          <Text style={styles.methodText}>{i18n.t('face_recognition')} (Beta)</Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
-        <Text style={styles.backText}>Back to Welcome</Text>
+        <Text style={styles.backText}>{i18n.t('back_to_welcome')}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
+import i18n from '../components/Translations';
 import * as SecureStore from 'expo-secure-store';
 
 export default function FingerprintSetup({ navigation, handleFinishOnboarding }) {

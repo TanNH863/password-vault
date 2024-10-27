@@ -1,21 +1,30 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { NoteContext } from '../../contexts/NoteContext'
-import { SecureNotes } from '../../models';
-import { addSecureNote, updateNote } from '../../db/database';
+import React, { useState, useContext, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
+import { NoteContext } from "../../contexts/NoteContext";
+import { SecureNotes } from "../../models";
+import { addSecureNote, updateNote } from "../../db/database";
 
 export default function AddNoteScreen({ navigation, route }) {
   const { loadSecureNotes } = useContext(NoteContext);
-  const [id, setID] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [id, setID] = useState("");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (route.params?.item) {
-      const { title, content, id } = route.params.item;
+      const { title, content, category, id } = route.params.item;
       setTitle(title);
       setContent(content);
+      setCategory(category);
       setID(id);
       setIsEditing(true);
     }
@@ -23,37 +32,33 @@ export default function AddNoteScreen({ navigation, route }) {
 
   const handleSave = async () => {
     if (!title || !content) {
-      Alert.alert('Error', 'Please fill out both fields');
+      Alert.alert("Error", "Please fill out both fields");
       return;
     }
 
     if (isEditing) {
       try {
-        await updateNote(id, title, content);
-        Alert.alert('Success', 'Note updated successfully');
+        await updateNote(id, title, content, category);
+        Alert.alert("Success", "Note updated successfully");
         loadSecureNotes();
         navigation.goBack();
+      } catch (error) {
+        Alert.alert("Error", "Failed to update info");
+        console.error("Error updating info: ", error);
       }
-      catch (error) {
-        Alert.alert('Error', 'Failed to update info');
-        console.error('Error updating info: ', error);
-      }
-      
-    }
-    else {
+    } else {
       try {
-        let note = new SecureNotes(id, title, content);
+        let note = new SecureNotes(id, title, content, category);
         await addSecureNote(note);
-        Alert.alert('Success', 'Note added successfully');
+        Alert.alert("Success", "Note added successfully");
         loadSecureNotes();
         navigation.goBack();
-      }
-      catch (error) {
-        Alert.alert('Error', 'Failed to add note');
-        console.error('Error adding note: ', error);
+      } catch (error) {
+        Alert.alert("Error", "Failed to add note");
+        console.error("Error adding note: ", error);
       }
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -73,6 +78,13 @@ export default function AddNoteScreen({ navigation, route }) {
         multiline
         numberOfLines={5}
       />
+      <Text style={styles.label}>Category</Text>
+      <TextInput
+        style={styles.input}
+        value={category}
+        onChangeText={setCategory}
+        placeholder="Enter category"
+      />
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
@@ -84,7 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   label: {
     fontSize: 16,
@@ -92,7 +104,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
     fontSize: 16,
@@ -102,13 +114,13 @@ const styles = StyleSheet.create({
     height: 100,
   },
   saveButton: {
-    backgroundColor: '#0377BC',
+    backgroundColor: "#0377BC",
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   saveButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
 });

@@ -1,10 +1,18 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { PasswordContext } from '../contexts/PasswordContext';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useContext } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { PasswordContext } from "../contexts/PasswordContext";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PasswordList() {
-  const { passwords, removePasswordInfo, isPasswordVisible } = useContext(PasswordContext);
+  const { passwords, removePasswordInfo, isPasswordVisible } =
+    useContext(PasswordContext);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const navigation = useNavigation();
 
@@ -15,12 +23,12 @@ export default function PasswordList() {
       [
         {
           text: "Cancel",
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Delete",
-          onPress: () => removePasswordInfo(id)
-        }
+          onPress: () => removePasswordInfo(id),
+        },
       ],
       { cancelable: false }
     );
@@ -31,42 +39,54 @@ export default function PasswordList() {
   };
 
   const handleEditPress = (item) => {
-    navigation.navigate('AddPasswordScreen', { item });
+    navigation.navigate("AddPasswordScreen", { item });
   };
 
   const renderPasswordItem = ({ item }) => (
     <View key={item.id} style={styles.passwordItemContainer}>
-      <TouchableOpacity style={styles.passwordItem} key={item.id} onPress={() => toggleDropdown(item.id)}>
-      <View style={styles.passwordInfo}>
-        <Text style={styles.passwordText}>App/Site: {item.appname}</Text>
-        <Text style={styles.passwordText}>Username: {item.username}</Text>
-        <Text style={styles.passwordText}>
-          Password: {isPasswordVisible ? item.password : '••••••••'}
-        </Text>
-      </View>
-    </TouchableOpacity>
-    {selectedItemId === item.id && (
-      <View style={styles.dropdownMenu}>
-        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleEditPress(item)}>
-          <Text style={styles.buttonText}>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dropdownButton} onPress={() => handleDeletePress(item.id)}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-    )}
+      <TouchableOpacity
+        style={styles.passwordItem}
+        key={item.id}
+        onPress={() => toggleDropdown(item.id)}
+      >
+        <View style={styles.passwordInfo}>
+          <Text style={styles.passwordText}>App/Site: {item.appname}</Text>
+          <Text style={styles.passwordText}>Username: {item.username}</Text>
+          <Text style={styles.passwordText}>
+            Password: {isPasswordVisible ? item.password : "•••••••••••••"}
+          </Text>
+          <Text style={styles.passwordText}>Category: {item.category}</Text>
+          <Text style={styles.passwordText}>Created: {item.created_at}</Text>
+        </View>
+      </TouchableOpacity>
+      {selectedItemId === item.id && (
+        <View style={styles.dropdownMenu}>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => handleEditPress(item)}
+          >
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.dropdownButton}
+            onPress={() => handleDeletePress(item.id)}
+          >
+            <Text style={styles.buttonText}>Delete</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
-  
+
   return (
     <FlatList
       data={passwords}
-      keyExtractor={item => item.id}
+      keyExtractor={(item) => item.id}
       renderItem={renderPasswordItem}
       contentContainerStyle={styles.listContainer}
     />
   );
-};
+}
 
 const styles = StyleSheet.create({
   passwordItemContainer: {
@@ -74,33 +94,33 @@ const styles = StyleSheet.create({
   },
   passwordItem: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ddd',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    borderColor: "#ddd",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   passwordInfo: {
     flex: 1,
   },
   passwordText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   dropdownMenu: {
     padding: 16,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     marginTop: 4,
   },
   dropdownButton: {
     paddingVertical: 8,
   },
   buttonText: {
-    color: '#007BFF',
+    color: "#007BFF",
   },
   listContainer: {
     padding: 10,

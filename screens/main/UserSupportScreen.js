@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { send, EmailJSResponseStatus } from '@emailjs/react-native';
+import React, { useState } from "react";
+import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { send, EmailJSResponseStatus } from "@emailjs/react-native";
 
 export default function UserSupportScreen() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const onSubmit = async () => {
     if (!email || !message) {
-      Alert.alert('Error', 'Please fill out both fields.');
+      Alert.alert("Error", "Please fill out both fields.");
       return;
     }
 
     try {
       await send(
-        'service_z3rzi1z',
-        'template_5inyeny',
+        "service_z3rzi1z",
+        "template_5inyeny",
         {
           email,
-          message
+          message,
         },
         {
-          publicKey: 'LyZyJk8BUJCKYb-H_',
-        },
+          publicKey: "LyZyJk8BUJCKYb-H_",
+        }
       );
 
-      console.log('SUCCESS!');
-    }
-    catch (err) {
+      console.log("SUCCESS!");
+    } catch (err) {
       if (err instanceof EmailJSResponseStatus) {
-        Alert.alert('Error', 'Failed to send your support request. Please try again later.');
-        console.log('EmailJS Request Failed...', err);
+        Alert.alert(
+          "Error",
+          "Failed to send your support request. Please try again later."
+        );
+        console.log("EmailJS Request Failed...", err);
       }
     }
   };
@@ -58,31 +60,31 @@ export default function UserSupportScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: '#f7f7f7',
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 20,
-    },
-    input: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      marginBottom: 20,
-    },
-    textArea: {
-      height: 100,
-      borderColor: 'gray',
-      borderWidth: 1,
-      borderRadius: 5,
-      paddingHorizontal: 10,
-      marginBottom: 20,
-      textAlignVertical: 'top',
-    },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#f7f7f7",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  textArea: {
+    height: 100,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+    textAlignVertical: "top",
+  },
 });

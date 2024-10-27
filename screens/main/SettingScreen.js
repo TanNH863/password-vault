@@ -1,36 +1,45 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, Switch, TouchableOpacity, StyleSheet, Alert, Modal, TextInput } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
-import * as LocalAuthentication from 'expo-local-authentication';
-import { PasswordContext } from '../../contexts/PasswordContext'
-import { Backup, Restore } from '../../utils/BackupRestore';
+import React, { useState, useContext, useEffect } from "react";
+import {
+  View,
+  Text,
+  Switch,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Modal,
+  TextInput,
+} from "react-native";
+import * as SecureStore from "expo-secure-store";
+import * as LocalAuthentication from "expo-local-authentication";
+import { PasswordContext } from "../../contexts/PasswordContext";
+import { Backup, Restore } from "../../utils/BackupRestore";
 
 export default function SettingScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { setPasswordVisibility } = useContext(PasswordContext);
   const { passwords, loadPasswordInfo } = useContext(PasswordContext);
 
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [authMethod, setAuthMethod] = useState(null);
 
   // Load the authentication method from storage when the component mounts
   useEffect(() => {
     const loadAuthMethod = async () => {
-      const method = await SecureStore.getItemAsync('authMethod');
+      const method = await SecureStore.getItemAsync("authMethod");
       setAuthMethod(method);
     };
     loadAuthMethod();
   }, []);
 
   const checkPIN = async () => {
-    const storedPin = await SecureStore.getItemAsync('user_pin');
+    const storedPin = await SecureStore.getItemAsync("user_pin");
     if (pin === storedPin) {
       setIsPasswordVisible(!isPasswordVisible);
       setPasswordVisibility(!isPasswordVisible);
       setIsModalVisible(false);
     } else {
-      Alert.alert('Incorrect PIN', 'The PIN you entered is incorrect.');
+      Alert.alert("Incorrect PIN", "The PIN you entered is incorrect.");
     }
   };
 
@@ -40,16 +49,22 @@ export default function SettingScreen() {
 
     if (hasHardware && isEnrolled) {
       const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: 'Authenticate to view passwords',
+        promptMessage: "Authenticate to view passwords",
       });
 
       if (result.success) {
         togglePasswordVisibility();
       } else {
-        Alert.alert('Authentication Failed', 'Failed to authenticate using fingerprint.');
+        Alert.alert(
+          "Authentication Failed",
+          "Failed to authenticate using fingerprint."
+        );
       }
     } else {
-      Alert.alert('Fingerprint Unavailable', 'Fingerprint authentication is not available on this device.');
+      Alert.alert(
+        "Fingerprint Unavailable",
+        "Fingerprint authentication is not available on this device."
+      );
     }
   };
 
@@ -59,10 +74,9 @@ export default function SettingScreen() {
   };
 
   const handleShowPasswordToggle = () => {
-    if (authMethod === 'PIN') {
+    if (authMethod === "PIN") {
       setIsModalVisible(true);
-    }
-    else if (authMethod === 'Fingerprint') {
+    } else if (authMethod === "Fingerprint") {
       authenticateWithFingerprint();
     }
   };
@@ -80,7 +94,10 @@ export default function SettingScreen() {
         <Text style={styles.buttonText}>Backup Passwords</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={() => Restore(loadPasswordInfo)}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => Restore(loadPasswordInfo)}
+      >
         <Text style={styles.buttonText}>Restore Passwords</Text>
       </TouchableOpacity>
 
@@ -98,7 +115,10 @@ export default function SettingScreen() {
           <TouchableOpacity style={styles.modalButton} onPress={checkPIN}>
             <Text style={styles.modalButtonText}>Submit</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.modalButton} onPress={() => setIsModalVisible(false)}>
+          <TouchableOpacity
+            style={styles.modalButton}
+            onPress={() => setIsModalVisible(false)}
+          >
             <Text style={styles.modalButtonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
@@ -111,12 +131,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   optionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 24,
   },
   optionText: {
@@ -124,18 +144,18 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 15,
-    backgroundColor: '#0377BC',
+    backgroundColor: "#0377BC",
     borderRadius: 5,
     marginVertical: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   modalTitle: {
@@ -144,23 +164,23 @@ const styles = StyleSheet.create({
   },
   pinInput: {
     borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottomColor: "#000",
     width: 150,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
     fontSize: 24,
     padding: 10,
   },
   modalButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
-    alignItems: 'center',
-    width: '50%',
+    alignItems: "center",
+    width: "50%",
   },
   modalButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
 });

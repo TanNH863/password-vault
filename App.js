@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ContextProviders } from './contexts/ContextProviders';
-import { LanguageScreen, WelcomeScreen, GetInfoScreen, SignInScreen, PINCodeSetup, FingerprintSetup } from './screens';
-import { AddPasswordScreen, AddNoteScreen, MainScreen, NoteViewScreen, SettingScreen, UserSupportScreen } from './screens/main'
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { ContextProviders } from "./contexts/ContextProviders";
+import {
+  LanguageScreen,
+  WelcomeScreen,
+  GetInfoScreen,
+  SignInScreen,
+  PINCodeSetup,
+  FingerprintSetup,
+} from "./screens";
+import {
+  AddPasswordScreen,
+  AddNoteScreen,
+  MainScreen,
+  NoteViewScreen,
+  SettingScreen,
+  UserSupportScreen,
+} from "./screens/main";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,20 +33,20 @@ function AppMainScreen() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Settings') {
-            iconName = focused ? 'settings' : 'settings-outline';
-          } else if (route.name == 'Support') {
-            iconName = focused ? 'help-circle' : 'help-circle-outline';
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
+          } else if (route.name == "Support") {
+            iconName = focused ? "help-circle" : "help-circle-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#0377BC',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "#0377BC",
+        tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          display: 'flex',
+          display: "flex",
         },
       })}
     >
@@ -48,11 +62,10 @@ export default function App() {
 
   useEffect(() => {
     const checkFirstLaunch = async () => {
-      const value = await AsyncStorage.getItem('isFirstLaunch');
+      const value = await AsyncStorage.getItem("isFirstLaunch");
       if (value === null) {
         setIsFirstLaunch(true);
-      }
-      else {
+      } else {
         setIsFirstLaunch(false);
       }
     };
@@ -64,10 +77,10 @@ export default function App() {
 
   const handleFinishOnboarding = async () => {
     try {
-      await AsyncStorage.setItem('isFirstLaunch', 'false');
+      await AsyncStorage.setItem("isFirstLaunch", "false");
       setIsFirstLaunch(false);
     } catch (error) {
-      console.error('Error setting first launch flag', error);
+      console.error("Error setting first launch flag", error);
     }
   };
 
@@ -82,19 +95,60 @@ export default function App() {
   return (
     <ContextProviders>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={isFirstLaunch ? "LanguageSelect" : "MainScreen"}>
+        <Stack.Navigator
+          initialRouteName={isFirstLaunch ? "LanguageSelect" : "MainScreen"}
+        >
           {isFirstLaunch && (
             <>
-              <Stack.Screen name="LanguageSelect" component={LanguageScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="GetInfo" component={GetInfoScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="SignUp" component={SignInScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="PINCodeSetup" component={(props) => <PINCodeSetup {...props} handleFinishOnboarding={handleFinishOnboarding} />} />
-              <Stack.Screen name="FingerprintSetup" component={(props) => <FingerprintSetup {...props} handleFinishOnboarding={handleFinishOnboarding} />} />
+              <Stack.Screen
+                name="LanguageSelect"
+                component={LanguageScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="GetInfo"
+                component={GetInfoScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignInScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="PINCodeSetup"
+                component={(props) => (
+                  <PINCodeSetup
+                    {...props}
+                    handleFinishOnboarding={handleFinishOnboarding}
+                  />
+                )}
+              />
+              <Stack.Screen
+                name="FingerprintSetup"
+                component={(props) => (
+                  <FingerprintSetup
+                    {...props}
+                    handleFinishOnboarding={handleFinishOnboarding}
+                  />
+                )}
+              />
             </>
           )}
-          <Stack.Screen name="MainScreen" component={AppMainScreen} options={{ headerShown: false }}/>
-          <Stack.Screen name="AddPasswordScreen" component={AddPasswordScreen} />
+          <Stack.Screen
+            name="MainScreen"
+            component={AppMainScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AddPasswordScreen"
+            component={AddPasswordScreen}
+          />
           <Stack.Screen name="AddNoteScreen" component={AddNoteScreen} />
           <Stack.Screen name="NoteViewScreen" component={NoteViewScreen} />
         </Stack.Navigator>
@@ -106,7 +160,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

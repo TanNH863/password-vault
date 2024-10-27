@@ -16,9 +16,6 @@ export default function LanguageScreen({ navigation }) {
       <TouchableOpacity style={styles.languageButton} onPress={() => selectLanguage('en')}>
         <Text style={styles.languageText}>English</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.languageButton} onPress={() => selectLanguage('es')}>
-        <Text style={styles.languageText}>Español</Text>
-      </TouchableOpacity>
       <TouchableOpacity style={styles.languageButton} onPress={() => selectLanguage('vi')}>
         <Text style={styles.languageText}>Tiếng Việt</Text>
       </TouchableOpacity>
