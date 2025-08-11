@@ -1,9 +1,9 @@
 import { darkTheme, lightTheme } from "@/components/theme";
-import { NoteContext } from "@/contexts/NoteContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { updateNote } from "@/db/database";
+import { useNotes } from "@/hooks/useNotes";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -21,7 +21,7 @@ export default function EditNoteScreen() {
     category: string;
   }>();
   const { theme } = useTheme();
-  const { loadSecureNotes } = useContext(NoteContext);
+  const { reload } = useNotes();
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
   const [editedCategory, setEditedCategory] = useState(category);
@@ -45,7 +45,7 @@ export default function EditNoteScreen() {
         created_at
       );
       Alert.alert("Success", "Note updated successfully");
-      loadSecureNotes();
+      reload();
       router.back();
     } catch (error) {
       Alert.alert("Error", "Failed to update info");

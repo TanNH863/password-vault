@@ -1,5 +1,6 @@
 import NoteList from "@/components/NoteList";
 import PasswordList from "@/components/PasswordList";
+import Selector from "@/components/Selector";
 import { darkTheme, lightTheme } from "@/components/theme";
 import { useTheme } from "@/contexts/ThemeContext";
 import { UsernameContext } from "@/contexts/UsernameContext";
@@ -10,7 +11,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useNavigation } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
 
 export default function MainScreen() {
   const navigation = useNavigation();
@@ -66,7 +66,7 @@ export default function MainScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <RNPickerSelect
+      {/* <RNPickerSelect
         onValueChange={(value) => handleSelectionChange(value)}
         items={[
           { label: "Passwords", value: "passwords" },
@@ -81,6 +81,15 @@ export default function MainScreen() {
           },
         }}
         value={selectedType}
+      /> */}
+      <Selector
+        options={[
+          { label: "Passwords", value: "passwords" },
+          { label: "Notes", value: "notes" },
+        ]}
+        value={selectedType}
+        onChange={(value) => handleSelectionChange(value)}
+        color={colors.text}
       />
 
       {renderContent(

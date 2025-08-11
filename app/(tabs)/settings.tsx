@@ -1,6 +1,7 @@
 import { darkTheme, lightTheme } from "@/components/theme";
 import { PasswordContext } from "@/contexts/PasswordContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { usePasswords } from "@/hooks/usePasswords";
 import { Backup, Restore } from "@/utils/backup-restore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalAuthentication from "expo-local-authentication";
@@ -18,8 +19,8 @@ import {
 
 export default function SettingScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { passwords, loadPasswordInfo, setPasswordVisibility } =
-    useContext(PasswordContext);
+  const { setPasswordVisibility } = useContext(PasswordContext);
+  const { passwords, reload } = usePasswords();
   const { theme, toggleTheme } = useTheme();
 
   const [pin, setPin] = useState("");
@@ -78,10 +79,16 @@ export default function SettingScreen() {
   };
 
   const handleShowPasswordToggle = () => {
-    if (authMethod === "PIN") {
-      setIsModalVisible(true);
-    } else if (authMethod === "Fingerprint") {
-      authenticateWithFingerprint();
+    switch (authMethod) {
+      case "PIN":
+        setIsModalVisible(true);
+        break;
+      case "Fingerprint":
+        authenticateWithFingerprint();
+        break;
+      default:
+        console.error("Invalid auth method");
+        break;
     }
   };
 
@@ -116,7 +123,7 @@ export default function SettingScreen() {
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: colors.primary }]}
-        onPress={() => Restore(loadPasswordInfo)}
+        onPress={() => Restore(reload)}
       >
         <Text style={[styles.buttonText, { color: colors.buttonText }]}>
           Restore Passwords

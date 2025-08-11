@@ -1,10 +1,10 @@
 import { darkTheme, lightTheme } from "@/components/theme";
-import { PasswordContext } from "@/contexts/PasswordContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { updatePasswordInfo } from "@/db/database";
+import { usePasswords } from "@/hooks/usePasswords";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   ScrollView,
@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 export default function EditPasswordScreen() {
-  const { loadPasswordInfo } = useContext(PasswordContext);
+  const { reload } = usePasswords();
   const { pswId, appname, username, password, category } =
     useLocalSearchParams<{
       pswId: string;
@@ -105,7 +105,7 @@ export default function EditPasswordScreen() {
         editedCategory
       );
       Alert.alert("Success", "Info updated successfully");
-      loadPasswordInfo();
+      reload();
       router.back();
     } catch (error) {
       Alert.alert("Error", "Failed to update info");
