@@ -1,8 +1,7 @@
 import i18n from "@/components/Translations";
-import { UsernameContext } from "@/contexts/UsernameContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,11 +12,9 @@ import {
 
 export default function GetInfoScreen() {
   const [input, setInput] = useState("");
-  const { setUsername } = useContext(UsernameContext);
 
   const handleContinue = async () => {
     if (input.trim()) {
-      setUsername(input);
       await AsyncStorage.setItem("username", input);
       router.replace("/sign-in");
     } else {

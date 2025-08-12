@@ -1,15 +1,15 @@
+import EmptyView from "@/components/EmptyView";
 import NoteList from "@/components/NoteList";
 import PasswordList from "@/components/PasswordList";
 import Selector from "@/components/Selector";
 import { darkTheme, lightTheme } from "@/components/theme";
 import { useTheme } from "@/contexts/ThemeContext";
-import { UsernameContext } from "@/contexts/UsernameContext";
 import { useNotes } from "@/hooks/useNotes";
 import { usePasswords } from "@/hooks/usePasswords";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useNavigation } from "expo-router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function MainScreen() {
@@ -18,7 +18,6 @@ export default function MainScreen() {
   const [open, setOpen] = useState(false);
   const { passwords, reload: reloadPasswords } = usePasswords();
   const { notes, reload: reloadNotes } = useNotes();
-  const { setUsername } = useContext(UsernameContext);
   const { theme } = useTheme();
   const colors = theme === "dark" ? darkTheme : lightTheme;
 
@@ -26,7 +25,6 @@ export default function MainScreen() {
     const loadStoredUsername = async () => {
       const storedUsername = await AsyncStorage.getItem("username");
       if (storedUsername) {
-        setUsername(storedUsername);
         navigation.setOptions({ title: `Welcome, ${storedUsername}` });
       }
     };
@@ -49,19 +47,33 @@ export default function MainScreen() {
 
   const renderContent = (type: string, data: any[]) => {
     const isEmpty = data.length === 0;
-    const EmptyMessage = () => (
-      <View style={styles.emptyContainer}>
-        <Text style={[styles.emptyText, { color: colors.text }]}>
-          {type === "passwords"
-            ? "No passwords added yet"
-            : "No notes added yet"}
-        </Text>
-      </View>
-    );
+    // const EmptyMessage = () => (
+    //   <View style={styles.emptyContainer}>
+    //     <Text style={[styles.emptyText, { color: colors.text }]}>
+    //       {type === "passwords"
+    //         ? "No passwords added yet"
+    //         : "No notes added yet"}
+    //     </Text>
+    //   </View>
+    // );
 
-    if (type === "passwords")
-      return isEmpty ? <EmptyMessage /> : <PasswordList />;
-    if (type === "notes") return isEmpty ? <EmptyMessage /> : <NoteList />;
+    // if (type === "passwords")
+    //   return isEmpty ? <EmptyMessage /> : <PasswordList />;
+    // if (type === "notes") return isEmpty ? <EmptyMessage /> : <NoteList />;
+    if (type === "passwords") {
+      return isEmpty ? (
+        <EmptyView message="No passwords added yet" />
+      ) : (
+        <PasswordList />
+      );
+    }
+    if (type === "notes") {
+      return isEmpty ? (
+        <EmptyView message="No notes added yet" />
+      ) : (
+        <NoteList />
+      );
+    }
   };
 
   return (
@@ -163,31 +175,6 @@ export default function MainScreen() {
     </View>
   );
 }
-
-const pickerSelectStyles = {
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 4,
-    color: "black",
-    paddingRight: 30,
-    marginBottom: 10,
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "gray",
-    borderRadius: 8,
-    color: "black",
-    paddingRight: 30,
-    marginBottom: 10,
-  },
-};
 
 const styles = StyleSheet.create({
   container: {
