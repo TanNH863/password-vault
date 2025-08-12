@@ -1,7 +1,7 @@
+import SegmentedControl from "@/components/Controller";
 import EmptyView from "@/components/EmptyView";
 import NoteList from "@/components/NoteList";
 import PasswordList from "@/components/PasswordList";
-import Selector from "@/components/Selector";
 import { darkTheme, lightTheme } from "@/components/theme";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useNotes } from "@/hooks/useNotes";
@@ -47,19 +47,6 @@ export default function MainScreen() {
 
   const renderContent = (type: string, data: any[]) => {
     const isEmpty = data.length === 0;
-    // const EmptyMessage = () => (
-    //   <View style={styles.emptyContainer}>
-    //     <Text style={[styles.emptyText, { color: colors.text }]}>
-    //       {type === "passwords"
-    //         ? "No passwords added yet"
-    //         : "No notes added yet"}
-    //     </Text>
-    //   </View>
-    // );
-
-    // if (type === "passwords")
-    //   return isEmpty ? <EmptyMessage /> : <PasswordList />;
-    // if (type === "notes") return isEmpty ? <EmptyMessage /> : <NoteList />;
     if (type === "passwords") {
       return isEmpty ? (
         <EmptyView message="No passwords added yet" />
@@ -78,30 +65,16 @@ export default function MainScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* <RNPickerSelect
-        onValueChange={(value) => handleSelectionChange(value)}
-        items={[
-          { label: "Passwords", value: "passwords" },
-          { label: "Notes", value: "notes" },
-        ]}
-        style={{
-          ...pickerSelectStyles,
-          inputIOS: { ...pickerSelectStyles.inputIOS, color: colors.text },
-          inputAndroid: {
-            ...pickerSelectStyles.inputAndroid,
-            color: colors.text,
-          },
-        }}
-        value={selectedType}
-      /> */}
-      <Selector
+      <SegmentedControl
         options={[
           { label: "Passwords", value: "passwords" },
           { label: "Notes", value: "notes" },
         ]}
         value={selectedType}
         onChange={(value) => handleSelectionChange(value)}
-        color={colors.text}
+        backgroundColor="#0377BC"
+        activeColor={colors.text}
+        inactiveColor={colors.text}
       />
 
       {renderContent(
