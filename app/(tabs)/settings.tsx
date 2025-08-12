@@ -98,20 +98,43 @@ export default function SettingScreen() {
         <Text style={[styles.optionText, { color: colors.text }]}>
           Show Passwords
         </Text>
-        <Switch
-          value={isPasswordVisible}
-          onValueChange={handleShowPasswordToggle}
-        />
+        <View
+          style={
+            theme === "dark"
+              ? { shadowColor: "#3399FF", shadowOpacity: 0.6, shadowRadius: 4 }
+              : {}
+          }
+        >
+          <Switch
+            value={isPasswordVisible}
+            onValueChange={handleShowPasswordToggle}
+            trackColor={{
+              false: colors.switchOff,
+              true: colors.switchOn,
+            }}
+          />
+        </View>
       </View>
       <View style={styles.optionContainer}>
         <Text style={[styles.optionText, { color: colors.text }]}>
-          Toggle Dark Mode
+          Dark Mode
         </Text>
-        <Switch
-          value={theme === "dark"}
-          onValueChange={toggleTheme}
-          thumbColor={colors.primary}
-        />
+        <View
+          style={
+            theme === "dark"
+              ? { shadowColor: "#3399FF", shadowOpacity: 0.6, shadowRadius: 4 }
+              : {}
+          }
+        >
+          <Switch
+            value={theme === "dark"}
+            onValueChange={toggleTheme}
+            trackColor={{
+              false: colors.switchOff,
+              true: colors.switchOn,
+            }}
+          />
+        </View>
       </View>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: colors.primary }]}

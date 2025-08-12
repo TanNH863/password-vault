@@ -152,17 +152,7 @@ export default function MainScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-  },
-  emptyText: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: 16,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    padding: 10,
   },
   addButton: {
     position: "absolute",

@@ -63,7 +63,7 @@ export default function AddNoteScreen() {
       />
       <Text style={[styles.label, { color: colors.text }]}>Note Content</Text>
       <TextInput
-        style={[styles.input, styles.textArea]}
+        style={[styles.input, styles.textArea, { color: colors.text }]}
         value={content}
         onChangeText={setContent}
         placeholder="Enter note content"

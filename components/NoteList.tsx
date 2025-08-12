@@ -87,7 +87,7 @@ export default function NoteList() {
           <Text style={styles.noteTitle}>{item.title}</Text>
           <Text style={styles.noteContent}>{item.content}</Text>
           <Text style={styles.noteContent}>Created: {item.created_at}</Text>
-          <Text style={styles.noteContent}>{item.category}</Text>
+          <Text style={styles.noteContent}>Category: {item.category}</Text>
         </View>
       </TouchableOpacity>
       {selectedItemId === item.id && (
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dropdownMenu: {
-    padding: 16,
+    padding: 10,
     backgroundColor: "#f9f9f9",
     borderRadius: 8,
     borderWidth: 1,
