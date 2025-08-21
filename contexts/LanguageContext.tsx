@@ -1,4 +1,4 @@
-import i18n from "@/components/Translations";
+import i18n from "@/constants/Translations";
 import React, { createContext, useState } from "react";
 
 interface LanguageContextType {
@@ -11,7 +11,11 @@ export const LanguageContext = createContext<LanguageContextType>({
   changeLanguage: () => {},
 });
 
-export const LanguageProvider = (children: React.ReactNode) => {
+export const LanguageProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [language, setLanguage] = useState(i18n.locale);
 
   const changeLanguage = (lang: string) => {

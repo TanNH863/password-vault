@@ -1,5 +1,5 @@
 import Feature from "@/components/Feature";
-import i18n from "@/components/Translations";
+import i18n from "@/constants/Translations";
 import { router } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";

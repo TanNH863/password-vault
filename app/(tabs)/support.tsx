@@ -1,3 +1,5 @@
+import { darkTheme, lightTheme } from "@/constants/theme";
+import { useTheme } from "@/contexts/ThemeContext";
 import { EmailJSResponseStatus, send } from "@emailjs/react-native";
 import React, { useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
@@ -5,6 +7,8 @@ import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 export default function UserSupportScreen() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const { theme } = useTheme();
+  const colors = theme === "dark" ? darkTheme : lightTheme;
 
   const onSubmit = async () => {
     if (!email || !message) {
@@ -38,18 +42,20 @@ export default function UserSupportScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Support</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.text }]}>Support</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: colors.text }]}
         placeholder="Your Email"
+        placeholderTextColor={colors.text}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
       />
       <TextInput
-        style={styles.textArea}
+        style={[styles.textArea, { color: colors.text }]}
         placeholder="Your Message"
+        placeholderTextColor={colors.text}
         value={message}
         onChangeText={setMessage}
         multiline

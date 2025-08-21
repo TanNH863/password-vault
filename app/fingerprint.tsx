@@ -1,4 +1,4 @@
-import i18n from "@/components/Translations";
+import i18n from "@/constants/Translations";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalAuthentication from "expo-local-authentication";
 import { router } from "expo-router";

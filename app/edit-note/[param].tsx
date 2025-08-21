@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme } from "@/components/theme";
+import { darkTheme, lightTheme } from "@/constants/theme";
 import { useTheme } from "@/contexts/ThemeContext";
 import { updateNote } from "@/db/database";
 import { useNotes } from "@/hooks/useNotes";

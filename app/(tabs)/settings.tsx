@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme } from "@/components/theme";
+import { darkTheme, lightTheme } from "@/constants/theme";
 import { PasswordContext } from "@/contexts/PasswordContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { usePasswords } from "@/hooks/usePasswords";
