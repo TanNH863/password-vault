@@ -1,3 +1,5 @@
+import SettingsButton from "@/components/SettingsButton";
+import SettingsSwitch from "@/components/SettingsSwitch";
 import { darkTheme, lightTheme } from "@/constants/theme";
 import { PasswordContext } from "@/contexts/PasswordContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -10,7 +12,6 @@ import {
   Alert,
   Modal,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   TouchableOpacity,
@@ -94,64 +95,24 @@ export default function SettingScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={styles.optionContainer}>
-        <Text style={[styles.optionText, { color: colors.text }]}>
-          Show Passwords
-        </Text>
-        <View
-          style={
-            theme === "dark"
-              ? { shadowColor: "#3399FF", shadowOpacity: 0.6, shadowRadius: 4 }
-              : {}
-          }
-        >
-          <Switch
-            value={isPasswordVisible}
-            onValueChange={handleShowPasswordToggle}
-            trackColor={{
-              false: colors.switchOff,
-              true: colors.switchOn,
-            }}
-          />
-        </View>
-      </View>
-      <View style={styles.optionContainer}>
-        <Text style={[styles.optionText, { color: colors.text }]}>
-          Dark Mode
-        </Text>
-        <View
-          style={
-            theme === "dark"
-              ? { shadowColor: "#3399FF", shadowOpacity: 0.6, shadowRadius: 4 }
-              : {}
-          }
-        >
-          <Switch
-            value={theme === "dark"}
-            onValueChange={toggleTheme}
-            trackColor={{
-              false: colors.switchOff,
-              true: colors.switchOn,
-            }}
-          />
-        </View>
-      </View>
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: colors.primary }]}
+      <SettingsSwitch
+        label="Show Passwords"
+        value={isPasswordVisible}
+        onValueChange={handleShowPasswordToggle}
+      />
+      <SettingsSwitch
+        label="Dark Mode"
+        value={theme === "dark"}
+        onValueChange={toggleTheme}
+      />
+      <SettingsButton
+        label="Backup Passwords"
         onPress={() => Backup(passwords)}
-      >
-        <Text style={[styles.buttonText, { color: colors.buttonText }]}>
-          Backup Passwords
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: colors.primary }]}
+      />
+      <SettingsButton
+        label="Restore Passwords"
         onPress={() => Restore(reload)}
-      >
-        <Text style={[styles.buttonText, { color: colors.buttonText }]}>
-          Restore Passwords
-        </Text>
-      </TouchableOpacity>
+      />
       <Modal visible={isModalVisible} animationType="slide">
         <View
           style={[
@@ -201,24 +162,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  optionContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  optionText: {
-    fontSize: 18,
-  },
-  button: {
-    padding: 15,
-    borderRadius: 5,
-    marginVertical: 10,
-    alignItems: "center",
-  },
-  buttonText: {
-    fontSize: 16,
   },
   modalContainer: {
     flex: 1,
