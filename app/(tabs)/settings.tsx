@@ -3,8 +3,14 @@ import SettingsSwitch from "@/components/SettingsSwitch";
 import { darkTheme, lightTheme } from "@/constants/theme";
 import { PasswordContext } from "@/contexts/PasswordContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useNotes } from "@/hooks/useNotes";
 import { usePasswords } from "@/hooks/usePasswords";
-import { Backup, Restore } from "@/utils/backup-restore";
+import {
+  NoteBackup,
+  NoteRestore,
+  PasswordBackup,
+  PasswordRestore,
+} from "@/utils/backup-restore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalAuthentication from "expo-local-authentication";
 import React, { useContext, useEffect, useState } from "react";
@@ -23,6 +29,7 @@ export default function SettingScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { setPasswordVisibility } = useContext(PasswordContext);
   const { passwords, reload } = usePasswords();
+  const { notes } = useNotes();
   const { theme, toggleTheme } = useTheme();
 
   const [pin, setPin] = useState("");
@@ -110,11 +117,16 @@ export default function SettingScreen() {
       />
       <SettingsButton
         label="Backup Passwords"
-        onPress={() => Backup(passwords)}
+        onPress={() => PasswordBackup(passwords)}
       />
+      <SettingsButton label="Backup Notes" onPress={() => NoteBackup(notes)} />
       <SettingsButton
         label="Restore Passwords"
-        onPress={() => Restore(reload)}
+        onPress={() => PasswordRestore(reload)}
+      />
+      <SettingsButton
+        label="Restore Notes"
+        onPress={() => NoteRestore(reload)}
       />
       <Modal visible={isModalVisible} animationType="slide">
         <View
