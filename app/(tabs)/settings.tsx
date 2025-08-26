@@ -11,6 +11,7 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   Modal,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -94,7 +95,9 @@ export default function SettingScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <SettingsSwitch
         label="Show Passwords"
         value={isPasswordVisible}
@@ -154,7 +157,7 @@ export default function SettingScreen() {
           </TouchableOpacity>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 

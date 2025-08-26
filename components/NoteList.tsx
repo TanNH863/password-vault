@@ -1,15 +1,9 @@
+import NoteItem from "@/components/NoteItem";
 import { useNotes } from "@/hooks/useNotes";
-import { Ionicons } from "@expo/vector-icons";
+import { Note } from "@/types/Note";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, FlatList, StyleSheet } from "react-native";
 
 export default function NoteList() {
   const { notes, removeNote } = useNotes();
@@ -40,12 +34,7 @@ export default function NoteList() {
     setSelectedItemId(selectedItemId === id ? null : id);
   };
 
-  const handleEditPress = (item: {
-    id: string;
-    title: string;
-    content: string;
-    category: string;
-  }) => {
+  const handleEditPress = (item: Note) => {
     router.push({
       pathname: "edit-note/[param]",
       params: {
@@ -58,12 +47,7 @@ export default function NoteList() {
     });
   };
 
-  const handleViewPress = (item: {
-    id: string;
-    title: string;
-    content: string;
-    category: string;
-  }) => {
+  const handleViewPress = (item: Note) => {
     router.push({
       pathname: "note-view/[param]",
       params: {
@@ -76,51 +60,19 @@ export default function NoteList() {
     });
   };
 
-  const renderNoteItem = ({ item }) => (
-    <View key={item.id} style={styles.noteItemContainer}>
-      <TouchableOpacity
-        style={styles.noteItem}
-        key={item.id}
-        onPress={() => toggleDropdown(item.id)}
-      >
-        <View style={styles.noteInfo}>
-          <Text style={styles.noteTitle}>{item.title}</Text>
-          <Text style={styles.noteContent}>{item.content}</Text>
-          <Text style={styles.noteContent}>Created: {item.created_at}</Text>
-          <Text style={styles.noteContent}>Category: {item.category}</Text>
-        </View>
-      </TouchableOpacity>
-      {selectedItemId === item.id && (
-        <View style={styles.dropdownMenu}>
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={styles.viewButton}
-              onPress={() => handleViewPress(item)}
-            >
-              <Ionicons name="eye-sharp" size={24} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => handleEditPress(item)}
-            >
-              <Ionicons name="create" size={24} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDeletePress(item.id)}
-            >
-              <Ionicons name="trash" size={24} color="#fff" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-    </View>
-  );
-
   return (
     <FlatList
       data={notes}
-      renderItem={renderNoteItem}
+      renderItem={({ item }) => (
+        <NoteItem
+          item={item}
+          selectedItemId={selectedItemId}
+          toggleDropdown={toggleDropdown}
+          handleViewPress={handleViewPress}
+          handleEditPress={handleEditPress}
+          handleDeletePress={handleDeletePress}
+        />
+      )}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.listContainer}
     />
@@ -128,48 +80,6 @@ export default function NoteList() {
 }
 
 const styles = StyleSheet.create({
-  noteItemContainer: {
-    marginBottom: 10,
-  },
-  noteItem: {
-    padding: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  noteInfo: {
-    flex: 1,
-  },
-  dropdownMenu: {
-    padding: 10,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginTop: 4,
-  },
-  viewButton: {
-    backgroundColor: "#0377BC",
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  editButton: {
-    backgroundColor: "#0377BC",
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  deleteButton: {
-    backgroundColor: "#FF3B30",
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
   buttonText: {
     color: "white",
   },

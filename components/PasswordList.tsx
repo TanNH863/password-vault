@@ -1,19 +1,11 @@
-import { PasswordContext } from "@/contexts/PasswordContext";
+import PasswordItem from "@/components/PasswordItem";
 import { usePasswords } from "@/hooks/usePasswords";
-import { Ionicons } from "@expo/vector-icons";
+import { Password } from "@/types/Passwords";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { Alert, FlatList, StyleSheet } from "react-native";
 
 export default function PasswordList() {
-  const { isPasswordVisible } = useContext(PasswordContext);
   const { passwords, removePasswordInfo } = usePasswords();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
@@ -42,7 +34,7 @@ export default function PasswordList() {
     setSelectedItemId(selectedItemId === id ? null : id);
   };
 
-  const handleEditPress = (item) => {
+  const handleEditPress = (item: Password) => {
     router.push({
       pathname: "edit-password/[param]",
       params: {
@@ -56,102 +48,25 @@ export default function PasswordList() {
     });
   };
 
-  const renderPasswordItem = ({ item }) => (
-    <View key={item.id} style={styles.passwordItemContainer}>
-      <TouchableOpacity
-        style={styles.passwordItem}
-        key={item.id}
-        onPress={() => toggleDropdown(item.id)}
-      >
-        <View style={styles.passwordInfo}>
-          <Text style={styles.passwordText}>App/Site: {item.appname}</Text>
-          <Text style={styles.passwordText}>Username: {item.username}</Text>
-          <Text style={styles.passwordText}>
-            Password: {isPasswordVisible ? item.password : "•••••••••••••"}
-          </Text>
-          <Text style={styles.passwordText}>Category: {item.category}</Text>
-          <Text style={styles.passwordText}>Created: {item.created_at}</Text>
-        </View>
-      </TouchableOpacity>
-      {selectedItemId === item.id && (
-        <View style={styles.dropdownMenu}>
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => handleEditPress(item)}
-            >
-              <Ionicons name="create" size={24} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => handleDeletePress(item.id)}
-            >
-              <Ionicons name="trash" size={24} color="#fff" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-    </View>
-  );
-
   return (
     <FlatList
       data={passwords}
       keyExtractor={(item) => item.id}
-      renderItem={renderPasswordItem}
+      renderItem={({ item }) => (
+        <PasswordItem
+          item={item}
+          selectedItemId={selectedItemId}
+          toggleDropdown={toggleDropdown}
+          handleEditPress={handleEditPress}
+          handleDeletePress={handleDeletePress}
+        />
+      )}
       contentContainerStyle={styles.listContainer}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  passwordItemContainer: {
-    marginBottom: 10,
-  },
-  passwordItem: {
-    padding: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  passwordInfo: {
-    flex: 1,
-  },
-  passwordText: {
-    fontWeight: "bold",
-  },
-  dropdownMenu: {
-    padding: 16,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginTop: 4,
-  },
-  editButton: {
-    backgroundColor: "#0377BC",
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  deleteButton: {
-    backgroundColor: "#FF3B30",
-    paddingVertical: 8,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: "white",
-  },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    gap: 10,
-  },
   listContainer: {
     padding: 10,
   },

@@ -2,7 +2,14 @@ import { darkTheme, lightTheme } from "@/constants/theme";
 import { useTheme } from "@/contexts/ThemeContext";
 import { EmailJSResponseStatus, send } from "@emailjs/react-native";
 import React, { useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+} from "react-native";
 
 export default function UserSupportScreen() {
   const [email, setEmail] = useState("");
@@ -42,7 +49,9 @@ export default function UserSupportScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <Text style={[styles.title, { color: colors.text }]}>Support</Text>
       <TextInput
         style={[styles.input, { color: colors.text }]}
@@ -61,7 +70,7 @@ export default function UserSupportScreen() {
         multiline
       />
       <Button title="Send" onPress={onSubmit} />
-    </View>
+    </SafeAreaView>
   );
 }
 
