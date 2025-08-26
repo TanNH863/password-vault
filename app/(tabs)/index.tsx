@@ -1,5 +1,7 @@
+import BottomSheet from "@/components/BottomSheet";
 import SegmentedControl from "@/components/Controller";
 import EmptyView from "@/components/EmptyView";
+import ModalButton from "@/components/ModalButton";
 import NoteList from "@/components/NoteList";
 import PasswordList from "@/components/PasswordList";
 import { darkTheme, lightTheme } from "@/constants/theme";
@@ -10,14 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export default function MainScreen() {
   const navigation = useNavigation();
@@ -98,62 +93,24 @@ export default function MainScreen() {
         <Ionicons name="add-outline" size={24} color={colors.buttonText} />
       </TouchableOpacity>
 
-      <Modal
-        transparent={true}
-        animationType="slide"
-        visible={open}
-        onRequestClose={() => setOpen(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View
-            style={[
-              styles.modalContent,
-              { backgroundColor: colors.modalBackground },
-            ]}
-          >
-            <Text style={[styles.modalTitle, { color: colors.text }]}>
-              Add New
-            </Text>
-            <TouchableOpacity
-              style={[styles.modalButton, { backgroundColor: colors.primary }]}
-              onPress={() => {
-                setOpen(false);
-                router.push("/add-password");
-              }}
-            >
-              <Text
-                style={[styles.modalButtonText, { color: colors.buttonText }]}
-              >
-                Password
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.modalButton, { backgroundColor: colors.primary }]}
-              onPress={() => {
-                setOpen(false);
-                router.push("/add-note");
-              }}
-            >
-              <Text
-                style={[styles.modalButtonText, { color: colors.buttonText }]}
-              >
-                Note
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.modalButton,
-                { backgroundColor: colors.secondary },
-              ]}
-              onPress={() => setOpen(false)}
-            >
-              <Text style={[styles.cancelButtonText, { color: colors.text }]}>
-                Cancel
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <BottomSheet visible={open} onClose={() => setOpen(false)}>
+        <Text style={[styles.modalTitle, { color: colors.text }]}>Add New</Text>
+        <ModalButton
+          label="Password"
+          onPress={() => {
+            setOpen(false);
+            router.push("/add-password");
+          }}
+        />
+        <ModalButton
+          label="Note"
+          onPress={() => {
+            setOpen(false);
+            router.push("/add-note");
+          }}
+        />
+        <ModalButton label="Cancel" onPress={() => setOpen(false)} />
+      </BottomSheet>
     </SafeAreaView>
   );
 }
@@ -189,17 +146,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 20,
-  },
-  modalButton: {
-    backgroundColor: "#007BFF",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  modalButtonText: {
-    color: "#fff",
-    fontSize: 16,
   },
   cancelButtonText: {
     color: "#333",
