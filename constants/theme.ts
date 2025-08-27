@@ -19,7 +19,7 @@ export const darkTheme = {
   secondary: "#2a2a2a",
   buttonText: "#ffffff",
   modalBackground: "#222222",
-  headerBackground: "#1f1f1f",
+  headerBackground: "#2f2f2f",
   headerText: "#0377BC",
   headerBorder: "#333333",
   switchOn: "#3399FF",

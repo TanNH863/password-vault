@@ -1,18 +1,28 @@
+import { darkTheme, lightTheme } from "@/constants/theme";
+import { useTheme } from "@/contexts/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import React from "react";
 
 export default function TabLayout() {
+  const { theme } = useTheme();
+  const colors = theme === "dark" ? darkTheme : lightTheme;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+        headerStyle: {
+          backgroundColor: colors.headerBackground,
+        },
         headerTitleStyle: {
           fontSize: 20,
+          color: colors.text,
         },
         tabBarActiveTintColor: "#FFF",
-        tabBarInactiveTintColor: "#000",
+        tabBarInactiveTintColor: theme === "dark" ? "#888" : "#000",
         tabBarActiveBackgroundColor: "#0377BC",
+        tabBarInactiveBackgroundColor: colors.headerBackground,
         tabBarLabelStyle: { fontSize: 12 },
       }}
     >
