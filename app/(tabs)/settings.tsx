@@ -1,3 +1,5 @@
+import BottomSheet from "@/components/BottomSheet";
+import ModalButton from "@/components/ModalButton";
 import SettingsButton from "@/components/SettingsButton";
 import SettingsSwitch from "@/components/SettingsSwitch";
 import { darkTheme, lightTheme } from "@/constants/theme";
@@ -14,16 +16,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalAuthentication from "expo-local-authentication";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Alert,
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
 
 export default function SettingScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -33,7 +26,7 @@ export default function SettingScreen() {
   const { theme, toggleTheme } = useTheme();
 
   const [pin, setPin] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [open, setOpen] = useState(false);
   const [authMethod, setAuthMethod] = useState<string | null>("");
 
   const colors = theme === "dark" ? darkTheme : lightTheme;
@@ -48,10 +41,12 @@ export default function SettingScreen() {
   }, []);
 
   const checkPIN = async () => {
+    // still checking on toggle off
+    // textinput not clearing on toggle on bottom sheet
     const storedPin = await AsyncStorage.getItem("user_pin");
     if (pin === storedPin) {
       togglePasswordVisibility();
-      setIsModalVisible(false);
+      setOpen(false);
     } else {
       Alert.alert("Incorrect PIN", "The PIN you entered is incorrect.");
     }
@@ -90,7 +85,7 @@ export default function SettingScreen() {
   const handleShowPasswordToggle = () => {
     switch (authMethod) {
       case "PIN":
-        setIsModalVisible(true);
+        setOpen(true);
         break;
       case "Fingerprint":
         authenticateWithFingerprint();
@@ -128,47 +123,24 @@ export default function SettingScreen() {
         label="Restore Notes"
         onPress={() => NoteRestore(reload)}
       />
-      <Modal visible={isModalVisible} animationType="slide">
-        <View
+      <BottomSheet visible={open} onClose={() => setOpen(false)}>
+        <Text style={[styles.modalTitle, { color: colors.text }]}>
+          Enter PIN to Show Passwords
+        </Text>
+        <TextInput
+          value={pin}
+          onChangeText={setPin}
+          keyboardType="numeric"
+          secureTextEntry
+          maxLength={6}
           style={[
-            styles.modalContainer,
-            { backgroundColor: colors.modalBackground },
+            styles.pinInput,
+            { color: colors.text, borderBottomColor: colors.text },
           ]}
-        >
-          <Text style={[styles.modalTitle, { color: colors.text }]}>
-            Enter PIN to Show Passwords
-          </Text>
-          <TextInput
-            value={pin}
-            onChangeText={setPin}
-            keyboardType="numeric"
-            secureTextEntry
-            maxLength={6}
-            style={[
-              styles.pinInput,
-              { color: colors.text, borderBottomColor: colors.text },
-            ]}
-          />
-          <TouchableOpacity
-            style={[styles.modalButton, { backgroundColor: colors.primary }]}
-            onPress={checkPIN}
-          >
-            <Text
-              style={[styles.modalButtonText, { color: colors.buttonText }]}
-            >
-              Submit
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.modalButton, { backgroundColor: colors.secondary }]}
-            onPress={() => setIsModalVisible(false)}
-          >
-            <Text style={[styles.modalButtonText, { color: colors.text }]}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
+        />
+        <ModalButton label="Submit" onPress={checkPIN} />
+        <ModalButton label="Cancel" onPress={() => setOpen(false)} />
+      </BottomSheet>
     </SafeAreaView>
   );
 }
@@ -185,10 +157,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   modalTitle: {
+    alignSelf: "center",
     fontSize: 18,
     marginBottom: 20,
   },
   pinInput: {
+    alignSelf: "center",
     borderBottomWidth: 1,
     width: 150,
     textAlign: "center",

@@ -33,7 +33,7 @@ export default function SettingsButton({
 
 const styles = StyleSheet.create({
   button: {
-    padding: 15,
+    padding: 10,
     borderRadius: 5,
     marginVertical: 10,
     alignItems: "center",

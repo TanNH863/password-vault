@@ -31,10 +31,11 @@ export default function ModalButton({ label, onPress }: ModalButtonProps) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#007BFF",
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
     alignItems: "center",
     marginBottom: 10,
+    width: "100%",
   },
   label: {
     color: "#fff",

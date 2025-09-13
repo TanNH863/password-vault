@@ -10,12 +10,18 @@ import { useNotes } from "@/hooks/useNotes";
 import { usePasswords } from "@/hooks/usePasswords";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router, useNavigation } from "expo-router";
-import React, { useEffect, useState } from "react";
+import {
+  router,
+  useFocusEffect,
+  useLocalSearchParams,
+  useNavigation,
+} from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export default function MainScreen() {
   const navigation = useNavigation();
+  const params = useLocalSearchParams();
   const [selectedType, setSelectedType] = useState("passwords");
   const [open, setOpen] = useState(false);
   const { passwords, reload: reloadPasswords } = usePasswords();
@@ -29,11 +35,24 @@ export default function MainScreen() {
       if (storedUsername) {
         navigation.setOptions({ title: `Welcome, ${storedUsername}` });
       }
+      if (
+        params.selectedType &&
+        (params.selectedType === "passwords" || params.selectedType === "notes")
+      ) {
+        setSelectedType(params.selectedType as string);
+      }
     };
 
     reloadPasswords();
     loadStoredUsername();
-  }, [navigation]);
+  }, [navigation, params.selectedType]);
+
+  useFocusEffect(
+    useCallback(() => {
+      reloadPasswords();
+      reloadNotes();
+    }, [])
+  );
 
   const handleSelectionChange = (value: string) => {
     setSelectedType(value);

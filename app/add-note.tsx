@@ -16,7 +16,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
 export default function AddNoteScreen() {
-  const { reload, addNewNote } = useNotes();
+  const { addNewNote } = useNotes();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
@@ -39,8 +39,7 @@ export default function AddNoteScreen() {
       let note = new Note(id, title, content, category, created_at);
       await addNewNote(note);
       Alert.alert("Success", "Note added successfully");
-      reload();
-      router.back();
+      router.replace("/");
     } catch (error) {
       Alert.alert("Error", "Failed to add note");
       console.error("Error adding note: ", error);

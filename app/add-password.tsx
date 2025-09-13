@@ -18,7 +18,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 
 export default function AddPasswordScreen() {
-  const { reload, addPasswordInfo } = usePasswords();
+  const { addPasswordInfo } = usePasswords();
   const [appname, setAppname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -106,8 +106,7 @@ export default function AddPasswordScreen() {
       );
       await addPasswordInfo(passwordInfo);
       Alert.alert("Success", "Info added successfully");
-      reload();
-      router.back();
+      router.replace({ pathname: "/", params: { selectedType: "passwords" } });
     } catch (error) {
       Alert.alert("Error", "Failed to add info");
       console.error("Error adding info: ", error);

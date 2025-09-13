@@ -1,8 +1,12 @@
+import { darkTheme, lightTheme } from "@/constants/theme";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 
 export default function NoteViewScreen() {
+  const { theme } = useTheme();
+  const colors = theme === "dark" ? darkTheme : lightTheme;
   const { title, content } = useLocalSearchParams<{
     title: string;
     content: string;

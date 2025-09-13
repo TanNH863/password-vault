@@ -31,7 +31,11 @@ export const PasswordContext = createContext<PasswordContextType>({
   setPasswordVisibility: () => {},
 });
 
-export const PasswordProvider = (children: React.ReactNode) => {
+export const PasswordProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [passwords, setPasswords] = useState<Array<Password>>([]);
   const [isVisible, setIsVisible] = useState(false);
 
