@@ -10,6 +10,10 @@ export const lightTheme = {
   headerBorder: "#ddd",
   switchOn: "#66B2FF",
   switchOff: "#ccc",
+  activeTint: "#FFF",
+  inactiveTint: "#000",
+  activeBackground: "#0377BC",
+  inactiveBackground: "#ffffff",
 };
 
 export const darkTheme = {
@@ -24,4 +28,8 @@ export const darkTheme = {
   headerBorder: "#333333",
   switchOn: "#3399FF",
   switchOff: "#555",
+  activeTint: "#FFF",
+  inactiveTint: "#888",
+  activeBackground: "#0377BC",
+  inactiveBackground: "#2f2f2f",
 };

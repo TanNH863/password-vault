@@ -19,11 +19,13 @@ export default function TabLayout() {
           fontSize: 20,
           color: colors.text,
         },
-        tabBarActiveTintColor: "#FFF",
-        tabBarInactiveTintColor: theme === "dark" ? "#888" : "#000",
-        tabBarActiveBackgroundColor: "#0377BC",
-        tabBarInactiveBackgroundColor: colors.headerBackground,
+        tabBarActiveTintColor: colors.activeTint,
+        tabBarInactiveTintColor: colors.inactiveTint,
+        tabBarActiveBackgroundColor: colors.activeBackground,
         tabBarLabelStyle: { fontSize: 12 },
+        tabBarStyle: {
+          backgroundColor: colors.headerBackground,
+        },
       }}
     >
       <Tabs.Screen
