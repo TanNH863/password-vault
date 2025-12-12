@@ -16,7 +16,8 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as LocalAuthentication from "expo-local-authentication";
 import React, { useContext, useEffect, useState } from "react";
-import { Alert, SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import packageJson from "../../package.json";
 
 export default function SettingScreen() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -141,6 +142,16 @@ export default function SettingScreen() {
         <ModalButton label="Submit" onPress={checkPIN} />
         <ModalButton label="Cancel" onPress={() => setOpen(false)} />
       </BottomSheet>
+      <View style={{ flex: 1 }} />
+      <Text
+        style={{
+          color: colors.text,
+          textAlign: "center",
+          paddingBottom: 10,
+        }}
+      >
+        Version: {packageJson.version}
+      </Text>
     </SafeAreaView>
   );
 }
